@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import util.RequestUtil;
@@ -25,7 +24,6 @@ public class PrivateSearch{
         this.requestUtil = requestUtil;
     }
 
-    @CrossOrigin("https://github.com")
     @RequestMapping("/getcode")
     public void getcode(HttpServletResponse response) throws IOException{
         response.sendRedirect("https:/github.com/login/oauth/authorize?client_id=2687357014dac98c13a9&scope=user");

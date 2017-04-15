@@ -2,13 +2,19 @@
 ---
 ##### 5 men
 
-api:
-1. www.konginyan.com/search/repo
-- params:
-- key: the key as a part of repository's name
-- language: such as java
-- sort: stars|forks|updated
-- order: asc|desc
-2. www.konginyan.com/search/
-- params:
-- key (require): the key as a part of commit's description
+search-api:
+1. www.kongin.cn/search/languages
+- return type: json (language -> repository count)
+- params: none
+- result: repository count for different language
+2. www.kongin.cn/search/languageUsers
+- return type: json (language -> user count)
+- params: none
+- result: user count for different language
+3. www.kongin.cn/search/languageRepos
+- return type: json (string list)
+- params: 
+  - language: the language of repositories
+  - page: pagination param
+  - per_page: pagination param
+- result: user count for different language
