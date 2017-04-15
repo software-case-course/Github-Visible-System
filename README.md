@@ -3,15 +3,15 @@
 ##### 5 men
 
 search-api:
-1. www.kongin.cn/search/languages
+1. http://www.kongin.cn/search/languages
 - return type: json (language -> repository count)
 - params: none
 - result: repository count for different language
-2. www.kongin.cn/search/languageUsers
+2. http://www.kongin.cn/search/languageUsers
 - return type: json (language -> user count)
 - params: none
 - result: user count for different language
-3. www.kongin.cn/search/languageRepos
+3. http://www.kongin.cn/search/languageRepos
 - return type: json (string list)
 - params: 
   - language: the language of repositories
