@@ -5,6 +5,7 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task"
     xsi:schemaLocation="http://www.springframework.org/schema/beans 
                         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
                         http://www.springframework.org/schema/mvc 
@@ -14,15 +15,21 @@
                         http://www.springframework.org/schema/aop 
                         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
                         http://www.springframework.org/schema/tx 
-                        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+                        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+                        http://www.springframework.org/schema/task  
+                        http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
     <mvc:annotation-driven />
 
+    <context:component-scan base-package="timetask"/>
     <context:component-scan base-package="action"/>
     <context:component-scan base-package="util"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
         <property name="prefix" value="/WEB-INF/"/>  
         <property name="suffix" value=".jsp"></property>  
-    </bean>  
+    </bean>
+
+    <task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+    <task:scheduler id="qbScheduler" pool-size="10"/>
 </beans>

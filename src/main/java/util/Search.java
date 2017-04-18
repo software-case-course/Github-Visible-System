@@ -2,9 +2,7 @@ package util;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.json.JsonObject;
 import com.jcabi.github.Github;
@@ -26,21 +24,20 @@ public class Search{
         return count;
     }
 
-    public static Map<String,Integer> LanguageYearCount(Language language) throws IOException{
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        int total_count = LanguageCount(language);
-        int per_page = 100;
-        System.out.println("Counting Year: "+ language.getValue() + "...");
-        for(int page=1;page<=(total_count/per_page)+(total_count%per_page==0?0:1);page++){
-            System.out.println("processing: " + page*per_page + "/" + total_count);
-            List<JsonObject> items = itemList("language:"+language.getValue(), page, per_page);
-            for(JsonObject item:items){
-                String year = item.getString("created_at").substring(0,4);
-                if(map.get(year)==null) map.put(year, 1);
-                else map.put(year, map.get(year)+1);
-            }
-        }
-        return map;
+    public static int LanguageYearCount(Language language, int year) throws IOException{
+        System.out.println("Counting "+ year +" Year: "+ language.getValue() + "...");
+        JsonObject json = github.entry().uri().path("/search/repositories")
+            .queryParam("q", "language:"+language.getValue()+" created:<"+(year+1)+"-01-01")
+            .back().method(Request.GET).fetch().as(JsonResponse.class).json().readObject();
+        int count = json.getInt("total_count");
+        return count;
+    }
+
+    public static int LanguageYearPushCount(Language language, int year) throws IOException{
+        System.out.println("Counting "+ year +" Push: "+ language.getValue() + "...");
+        JsonObject json = ReposJson("language:"+language.getValue()+" pushed:"+(year)+"-01-01.."+(year+1)+"-01-01");
+        int count = json.getInt("total_count");
+        return count;
     }
 
     public static int LanguageUserCount(Language language) throws IOException{

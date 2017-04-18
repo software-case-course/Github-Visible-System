@@ -1,9 +1,8 @@
 package action;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.json.JsonStructure;
 
@@ -18,7 +17,10 @@ import com.jcabi.github.RtGithub;
 import com.jcabi.http.Request;
 import com.jcabi.http.response.JsonResponse;
 
-import po.Language;
+import po.LanguageDetail;
+import po.YearDetail;
+import service.LanguageDetailService;
+import service.YearDetailService;
 import util.RequestUtil;
 import util.Search;
 
@@ -28,10 +30,24 @@ import util.Search;
 public class PublicSearch{
     @Autowired
     RequestUtil requestUtil;
+    @Autowired
+    LanguageDetailService languageDetailService;
+    @Autowired
+    YearDetailService yearDetailService;
 
     @SuppressWarnings("unused")
     private void setRequestUtil(RequestUtil requestUtil){
         this.requestUtil = requestUtil;
+    }
+
+    @SuppressWarnings("unused")
+    private void setLanguageDetailService(LanguageDetailService languageDetailService){
+        this.languageDetailService = languageDetailService;
+    }
+
+    @SuppressWarnings("unused")
+    private void setYearDetailService(YearDetailService yearDetailService){
+        this.yearDetailService = yearDetailService;
     }
 
     /**
@@ -80,32 +96,21 @@ public class PublicSearch{
 
     @ResponseBody
     @RequestMapping("/languages")
-    public Map<String,Integer> languageDetail() throws IOException{
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        for(Language language: Language.values()){
-            map.put(language.getValue(), Search.LanguageCount(language));
-        }
-        return map;
+    public List<LanguageDetail> languageDetail() throws IOException{
+        return languageDetailService.findAll();
     }
 
     @ResponseBody
-    @RequestMapping("/languageUsers")
-    public Map<String,Integer> languageUsers() throws IOException{
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        for(Language language: Language.values()){
-            map.put(language.getValue(), Search.LanguageUserCount(language));
+    @RequestMapping("/year")
+    public List<YearDetail> languageYear(String language, Integer year) {
+        if(language!=null&&year==null) return yearDetailService.findByLanguage(language);
+        if(year!=null&&language==null) return yearDetailService.findByYear(year);
+        if(year!=null&&language!=null) {
+            List<YearDetail> list = new ArrayList<YearDetail>();
+            list.add(yearDetailService.findByLanguageAndYear(language, year));
+            return list;
         }
-        return map;
-    }
-
-    @ResponseBody
-    @RequestMapping("/languageYear")
-    public Map<String,Map<String,Integer>> languageYear() throws IOException{
-        Map<String,Map<String,Integer>> map = new HashMap<String,Map<String,Integer>>();
-        for(Language language: Language.values()){
-            map.put(language.getValue(), Search.LanguageYearCount(language));
-        }
-        return map;
+        return yearDetailService.findAll();
     }
 
     @ResponseBody
