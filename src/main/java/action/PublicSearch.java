@@ -17,6 +17,7 @@ import com.jcabi.github.RtGithub;
 import com.jcabi.http.Request;
 import com.jcabi.http.response.JsonResponse;
 
+import po.Language;
 import po.LanguageDetail;
 import po.YearDetail;
 import service.LanguageDetailService;
@@ -117,5 +118,15 @@ public class PublicSearch{
     @RequestMapping("/language")
     public List<String> languageRepos(String language, int page, int per_page) throws IOException{
         return Search.LanguageRepos(language, page, per_page);
+    }
+
+    @ResponseBody
+    @RequestMapping("/languagelist")
+    public List<String> languageList(){
+        List<String> list = new ArrayList<String>();
+        for(Language language: Language.values()){
+            list.add(language.getValue());
+        }
+        return list;
     }
 }

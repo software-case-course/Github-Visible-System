@@ -4,11 +4,14 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import util.Authorize;
 import util.RequestUtil;
 
 @Controller
@@ -24,16 +27,22 @@ public class PrivateSearch{
         this.requestUtil = requestUtil;
     }
 
-    @RequestMapping("/getcode")
-    public void getcode(HttpServletResponse response) throws IOException{
+    @RequestMapping("/authorize")
+    public void authorize(HttpServletResponse response) throws IOException{
         response.sendRedirect("https:/github.com/login/oauth/authorize?client_id=2687357014dac98c13a9&scope=user");
     }
 
+    @ResponseBody
     @RequestMapping("/gettoken")
-    public void gettoken(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        access_token = requestUtil.requestForMap("https://github.com/login/oauth/access_token",
-         "POST",
-         "client_id=2687357014dac98c13a9&client_secret=e6808532ec8db2b38dacf1a5514589200476e242&code="+request.getParameter("code"),
-         null);
+    public String gettoken(HttpServletRequest request, HttpSession session){
+        try{
+            String token = Authorize.getToken(request.getParameter("code"));
+            session.setAttribute("token", token);
+        }catch(IOException e){
+            e.printStackTrace();
+            return "get token fail";
+        }finally{
+            return "success";
+        }
     }
 }

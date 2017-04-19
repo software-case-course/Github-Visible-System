@@ -15,10 +15,6 @@ public class LanguageDetailService{
     @Autowired
     LanguageDetailRepo languageDetailRepo;
 
-    public void setLanRepoCountRepo(LanguageDetailRepo languageDetailRepo){
-        this.languageDetailRepo = languageDetailRepo;
-    }
-
     public List<LanguageDetail> findAll(){
         return languageDetailRepo.findAll();
     }

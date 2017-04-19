@@ -76,7 +76,7 @@
       <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
-          <version>4.10</version>
+          <version>4.12</version>
       </dependency>
 
       <!--spring-->
@@ -99,6 +99,13 @@
           <version>1.8.0.RELEASE</version>
       </dependency>
 
+      <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+          <version>4.3.5.RELEASE</version>
+      </dependency>
+
       <dependency>
           <groupId>org.hibernate</groupId>
           <artifactId>hibernate-entitymanager</artifactId>
@@ -116,6 +123,18 @@
           <groupId>log4j</groupId>
           <artifactId>log4j</artifactId>
           <version>1.2.17</version>
+      </dependency>
+
+      <dependency>
+          <groupId>javax.el</groupId>
+          <artifactId>javax.el-api</artifactId>
+          <version>2.2.4</version>
+      </dependency>
+    
+      <dependency>
+          <groupId>org.glassfish.web</groupId>
+          <artifactId>javax.el</artifactId>
+          <version>2.2.4</version>
       </dependency>
   </dependencies>
   <build>

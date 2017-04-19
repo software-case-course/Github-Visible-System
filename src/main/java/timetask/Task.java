@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import po.Language;
+import po.YearDetail;
 import service.LanguageDetailService;
 import service.YearDetailService;
 import util.Search;
@@ -24,18 +25,6 @@ public class Task{
     YearDetailService yearDetailService;
 
     boolean isFirst = true;
-
-    public void setRequestLimit(RequestLimit requestLimit){
-        this.requestLimit = requestLimit;
-    }
-
-    public void setLanguageDetailService(LanguageDetailService languageDetailService){
-        this.languageDetailService = languageDetailService;
-    }
-
-    public void setYearDetailService(YearDetailService yearDetailService){
-        this.yearDetailService = yearDetailService;
-    }
 
     public Task(){}
 
@@ -54,8 +43,10 @@ public class Task{
     @Scheduled(fixedRate = 1000 * 60 * 60 * 24, initialDelay = 0)
     public void getYearCount() throws IOException{
         if(isFirst){
+            getLanguagesData("repo");
+            getLanguagesData("user");
             getYearData("repo");
-            getYearData("push");
+            getYearData("push");           
             isFirst = false;
         }
         else{
@@ -91,6 +82,12 @@ public class Task{
             Date date = new Date();
             for(int year=2008;year<=date.getYear()+1900;year++){
                 final int y = year;
+                YearDetail detail = yearDetailService.findByLanguageAndYear(language.getValue(), year);
+                if(detail!=null){
+                    if((detail.getRepo()!=-1 && method.equals("repo")) || (detail.getPush()!=-1 && method.equals("push"))){
+                        continue;
+                    }
+                }
                 Thread thread = new Thread(new Runnable(){
                     public void run(){
                         try{
@@ -113,7 +110,7 @@ public class Task{
             final Language lan = language;
             final String met = method;
             Date date = new Date();
-            final int y = date.getYear()+190;
+            final int y = date.getYear()+1900;
             Thread thread = new Thread(new Runnable(){
                 public void run(){
                     try{

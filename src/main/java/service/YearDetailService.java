@@ -15,10 +15,6 @@ public class YearDetailService{
     @Autowired
     YearDetailRepo yearDetailRepo;
 
-    public void setYearDetailRepo(YearDetailRepo yearDetailRepo){
-        this.yearDetailRepo = yearDetailRepo;
-    }
-
     public List<YearDetail> findAll(){
         return yearDetailRepo.findAll();
     }

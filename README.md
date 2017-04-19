@@ -20,3 +20,7 @@ search-api:
   - page: pagination param
   - per_page: pagination param
 - result: user count for different language
+4. http://www.kongin.cn/git-view/search/languagelist
+- return type: json
+- params: none
+- result: list all language on the web
