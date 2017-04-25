@@ -2,15 +2,20 @@ package timetask;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import po.Language;
+import po.Proxy;
 import po.YearDetail;
 import service.LanguageDetailService;
 import service.YearDetailService;
+import util.RequestUtil;
 import util.Search;
 
 @Component
@@ -23,6 +28,12 @@ public class Task{
 
     @Autowired
     YearDetailService yearDetailService;
+
+    @Autowired
+    ProxyPool proxyPool;
+
+    @Autowired
+    RequestUtil requestUtil;
 
     boolean isFirst = true;
 
@@ -52,6 +63,28 @@ public class Task{
         else{
             getRecentYearData("repo");
             getRecentYearData("push");
+        }
+    }
+
+    @Scheduled(fixedRate = 1000 * 60 * 10, initialDelay = 0)
+    public void offerProxy(){
+        if(!proxyPool.overload()){
+            try{
+                String result = requestUtil.request("http://www.xdaili.cn/ipagent//freeip/getFreeIps");
+                JSONObject json = requestUtil.StringToJson(result);
+                JSONArray rows = json.getJSONArray("rows");
+                Iterator<Object> iterator = rows.iterator();
+                while(iterator.hasNext()){
+                    JSONObject row = (JSONObject)iterator.next();
+                    System.out.println(row.getString("ip")+":"+row.getInt("port"));
+                    proxyPool.offerProxy(new Proxy(row.getString("ip"), row.getInt("port")));
+                }
+            }catch(Exception e){
+                System.err.println(e);
+            }
+        }
+        else{
+            proxyPool.clearProxy(10);
         }
     }
 

@@ -41,8 +41,7 @@ public class PrivateSearch{
         }catch(IOException e){
             e.printStackTrace();
             return "get token fail";
-        }finally{
-            return "success";
         }
+        return "success";
     }
 }
