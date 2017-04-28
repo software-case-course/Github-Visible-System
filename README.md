@@ -2,25 +2,32 @@
 ---
 ##### 5 men
 
-search-api:
+搜索 api:
 1. http://www.kongin.cn/git-view/search/languages
-- return type: json (language -> repository count)
-- params: none
-- result: repository count for different language
+- 返回类型: jsonArray (language -> repository count)
+- 参数: 无
+- 结果: 不同语言的仓库数量
+
 2. http://www.kongin.cn/git-view/search/year
-- return type: json (language,year -> user count)
-- params (get all data if params is none): 
-  - language: the language of repositories
-  - year: created year of repositories
-- result: user count for different language
-3. http://www.kongin.cn/git-view/search/languageRepos
-- return type: json (string list)
-- params: 
-  - language: the language of repositories
-  - page: pagination param
-  - per_page: pagination param
-- result: user count for different language
+- 返回类型: json (language,year -> user, count)
+- 参数 (如果不写参数，返回全部数据): 
+  - language: 仓库语言
+  - year: 仓库创建年份
+- 结果: 不同语言在不同年份的用户和仓库数量
+
+3. http://www.kongin.cn/git-view/search/repos
+- 返回类型: jsonArray
+- 参数 (必须写): 
+  - q: 仓库关键词
+- 结果: 关键词搜索前30个仓库名字和url
+
 4. http://www.kongin.cn/git-view/search/languagelist
-- return type: json
-- params: none
-- result: list all language on the web
+- 返回类型: json
+- 参数: 无
+- 结果: 列出所有已经记录的语言
+
+5. http://www.kongin.cn/git-view/search/lanrepos
+- 返回类型: jsonArray
+- 参数 (必须写): 
+  - language: 仓库语言
+- 结果: 语言搜索前30个仓库名字和url

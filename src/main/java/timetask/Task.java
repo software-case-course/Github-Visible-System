@@ -7,8 +7,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -56,27 +54,28 @@ public class Task{
             getRecentYearData("push");
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 1, initialDelay = 0)
+    @Scheduled(fixedRate = 1000 * 60, initialDelay = 0)
     public void offerProxy() throws Exception{
-        String str = requestUtil.request("http://www.89ip.cn/api/?&tqsl=50&sxa=&sxb=&tta=&ports=&ktip=&cf=1");
-        String[] temp = str.split("\r\n");
-        String[] ips = temp[3].split("<br>")[0].split("<BR>");
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(50, 100, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
-        for(String ip: ips){
-            String[] pp = ip.split(":");
-            System.out.println(ip);
-            final Proxy proxy = new Proxy(pp[0], Integer.parseInt(pp[1]));
-            threadPool.execute(new Runnable(){
-                public void run(){
-                    if(proxyPool.checkProxy(proxy)) proxyPool.offerProxy(proxy);
-                }
-            });
-        }   
+        if(!proxyPool.overload()){
+            String str = requestUtil.request("http://www.89ip.cn/api/?&tqsl=50&sxa=&sxb=&tta=&ports=&ktip=&cf=1");
+            String[] temp = str.split("\r\n");
+            String[] ips = temp[3].split("<br>")[0].split("<BR>");
+            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(10, 50, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+            for(String ip: ips){
+                String[] pp = ip.split(":");
+                final Proxy proxy = new Proxy(pp[0], Integer.parseInt(pp[1]));
+                threadPool.execute(new Runnable(){
+                    public void run(){
+                        if(proxyPool.checkProxy(proxy)) proxyPool.offerProxy(proxy);
+                    }
+                });
+            }   
+        }
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 1, initialDelay = 1000 * 60 * 1)
+    @Scheduled(fixedRate = 1000 * 60, initialDelay = 1000 * 30)
     public void ProxyFilter(){
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(50, 100, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(10, 50, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
         Iterator<Proxy> iterator = proxyPool.iterator();
         while(iterator.hasNext()){
             final Proxy proxy = iterator.next();

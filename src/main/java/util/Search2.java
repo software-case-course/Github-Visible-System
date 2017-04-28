@@ -41,6 +41,7 @@ public class Search2{
                 Proxy proxy = proxyPool.useProxy();
                 result = requestUtil.request(url,"GET", null, null, requestUtil.getProxy(proxy.getIp(), proxy.getPort()));
                 access = true;
+                System.out.println("connected success");
             }catch(Exception e){
                 proxyPool.popProxy();
                 System.out.println("connected fail, try again");

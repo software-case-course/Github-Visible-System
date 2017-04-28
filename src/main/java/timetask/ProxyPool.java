@@ -43,7 +43,7 @@ public class ProxyPool{
         return null;
     }
 
-    public synchronized void offerProxy(Proxy proxy){
+    public void offerProxy(Proxy proxy){
         if(!overload()) pool.offer(proxy);
     }
 

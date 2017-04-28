@@ -33,7 +33,8 @@ public class RequestUtil{
         conn.setDoInput(true);
         conn.setDoOutput(true);
         conn.setUseCaches(false);
-        conn.setConnectTimeout(5000);
+        conn.setConnectTimeout(1000);
+        conn.setReadTimeout(3000);
         conn.setRequestMethod(requestMethod);
         conn.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"); 
         if(null!=param){
