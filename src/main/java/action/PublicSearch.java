@@ -3,7 +3,9 @@ package action;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,13 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import po.Language;
 import po.LanguageDetail;
-import po.Proxy;
 import po.YearDetail;
 import service.LanguageDetailService;
 import service.YearDetailService;
-import timetask.ProxyPool;
 import util.RequestUtil;
 import util.Search;
+import util.Search2;
 
 @Controller
 @CrossOrigin
@@ -34,7 +35,7 @@ public class PublicSearch{
     YearDetailService yearDetailService;
 
     @Autowired
-    ProxyPool proxyPool;
+    Search2 search2;
 
     /**
      * @param repo
@@ -56,18 +57,16 @@ public class PublicSearch{
 
     @ResponseBody
     @RequestMapping("/repos")
-    public String searchRepos(String q){
-        String result = null;
-        try{
-            Proxy proxy = proxyPool.useProxy();
-            result = requestUtil.request(
-                "https://api.github.com/search/repositories?q=" + q,
-                "GET", null, null, requestUtil.getProxy(proxy.getIp(), proxy.getPort()));
-            System.out.println(proxy.getIp()+":"+proxy.getPort());
-        }catch(Exception e){
-            proxyPool.clearProxy(1);
-        }
-        return result;
+    public List<Map<String,String>> searchRepos(String q){
+        JSONObject json = search2.searchReposByKey(q);
+        return search2.selectRepos(json);
+    }
+
+    @ResponseBody
+    @RequestMapping("/lanrepos")
+    public List<Map<String,String>> searchReposForLanguage(String language){
+        JSONObject json = search2.searchReposByLanguage(language);
+        return search2.selectRepos(json);
     }
 
     @ResponseBody

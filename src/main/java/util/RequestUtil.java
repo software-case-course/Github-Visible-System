@@ -25,12 +25,17 @@ public class RequestUtil{
         URL url = new URL(requestUrl);
         InputStream inputStream;
         HttpURLConnection conn;
-        if(proxy!=null) conn = (HttpURLConnection)url.openConnection(proxy);
+        if(proxy!=null) {
+            System.out.println("using proxy " + proxy.address() + " to request " + requestUrl);
+            conn = (HttpURLConnection)url.openConnection(proxy);
+        }
         else conn = (HttpURLConnection)url.openConnection();
         conn.setDoInput(true);
         conn.setDoOutput(true);
         conn.setUseCaches(false);
+        conn.setConnectTimeout(5000);
         conn.setRequestMethod(requestMethod);
+        conn.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"); 
         if(null!=param){
             OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
             writer.write(param);
@@ -40,11 +45,12 @@ public class RequestUtil{
             conn.setRequestProperty("Accept", "application/vnd.github.cloak-preview");
         }
         conn.connect();
-        System.out.println(conn.getResponseCode());
+        //System.out.println(conn.getResponseCode());
         if(conn.getResponseCode()!=HttpURLConnection.HTTP_OK
         &&conn.getResponseCode()!=HttpURLConnection.HTTP_ACCEPTED
         &&conn.getResponseCode()!=HttpURLConnection.HTTP_CREATED){
             inputStream = conn.getErrorStream();
+            throw new Exception();
         }
         else inputStream = conn.getInputStream();
         
@@ -52,7 +58,7 @@ public class RequestUtil{
         String str = null;
         StringBuffer sBuffer = new StringBuffer();
         while((str = bufferedReader.readLine())!=null){
-            sBuffer.append(str);
+            sBuffer.append(str + "\r\n");
         }
         bufferedReader.close();
         inputStream.close();

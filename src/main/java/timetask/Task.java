@@ -3,6 +3,9 @@ package timetask;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,8 +38,6 @@ public class Task{
     @Autowired
     RequestUtil requestUtil;
 
-    boolean isFirst = true;
-
     public Task(){}
 
     @Scheduled(fixedRate = 1000 * 60 * 2, initialDelay = 1000 * 60 * 2)
@@ -45,46 +46,45 @@ public class Task{
         t.start();
     }
 
-    @Scheduled(cron = "0 0 12 * * ?")
-    public void getLanguageCount(){
-        getLanguagesData("repo");
-        getLanguagesData("user");
-    }
-
     @Scheduled(fixedRate = 1000 * 60 * 60 * 24, initialDelay = 0)
     public void getYearCount() throws IOException{
-        if(isFirst){
             getLanguagesData("repo");
             getLanguagesData("user");
             getYearData("repo");
-            getYearData("push");           
-            isFirst = false;
-        }
-        else{
+            getYearData("push");
             getRecentYearData("repo");
             getRecentYearData("push");
-        }
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 10, initialDelay = 0)
-    public void offerProxy(){
-        if(!proxyPool.overload()){
-            try{
-                String result = requestUtil.request("http://www.xdaili.cn/ipagent//freeip/getFreeIps");
-                JSONObject json = requestUtil.StringToJson(result);
-                JSONArray rows = json.getJSONArray("rows");
-                Iterator<Object> iterator = rows.iterator();
-                while(iterator.hasNext()){
-                    JSONObject row = (JSONObject)iterator.next();
-                    System.out.println(row.getString("ip")+":"+row.getInt("port"));
-                    proxyPool.offerProxy(new Proxy(row.getString("ip"), row.getInt("port")));
+    @Scheduled(fixedRate = 1000 * 60 * 1, initialDelay = 0)
+    public void offerProxy() throws Exception{
+        String str = requestUtil.request("http://www.89ip.cn/api/?&tqsl=50&sxa=&sxb=&tta=&ports=&ktip=&cf=1");
+        String[] temp = str.split("\r\n");
+        String[] ips = temp[3].split("<br>")[0].split("<BR>");
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(50, 100, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+        for(String ip: ips){
+            String[] pp = ip.split(":");
+            System.out.println(ip);
+            final Proxy proxy = new Proxy(pp[0], Integer.parseInt(pp[1]));
+            threadPool.execute(new Runnable(){
+                public void run(){
+                    if(proxyPool.checkProxy(proxy)) proxyPool.offerProxy(proxy);
                 }
-            }catch(Exception e){
-                System.err.println(e);
-            }
-        }
-        else{
-            proxyPool.clearProxy(10);
+            });
+        }   
+    }
+
+    @Scheduled(fixedRate = 1000 * 60 * 1, initialDelay = 1000 * 60 * 1)
+    public void ProxyFilter(){
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(50, 100, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+        Iterator<Proxy> iterator = proxyPool.iterator();
+        while(iterator.hasNext()){
+            final Proxy proxy = iterator.next();
+            threadPool.execute(new Runnable(){
+                public void run(){
+                    if(!proxyPool.checkProxy(proxy)) proxyPool.deleteProxy(proxy);
+                }
+            });
         }
     }
 
@@ -113,7 +113,7 @@ public class Task{
             final Language lan = language;
             final String met = method;
             Date date = new Date();
-            for(int year=2008;year<=date.getYear()+1900;year++){
+            for(int year=2008;year<date.getYear()+1900;year++){
                 final int y = year;
                 YearDetail detail = yearDetailService.findByLanguageAndYear(language.getValue(), year);
                 if(detail!=null){

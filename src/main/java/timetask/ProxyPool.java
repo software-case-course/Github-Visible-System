@@ -1,6 +1,7 @@
 package timetask;
 
 
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,7 +13,7 @@ import util.RequestUtil;
 
 @Component
 public class ProxyPool{
-    static final int DEFAULT_MAX = 30;
+    static final int DEFAULT_MAX = 100;
     static final int DEFAULT_LIMIT = 10;
     Queue<Proxy> pool;
     int maxSize;
@@ -34,33 +35,38 @@ public class ProxyPool{
     }
 
     public synchronized Proxy useProxy(){
-        Proxy proxy = pool.peek();
-        try{
-            requestUtil.request(
-                "https://www.baidu.com",
-                "GET", null, null, requestUtil.getProxy(proxy.getIp(), proxy.getPort()));
-        }catch(Exception e){
-            pool.remove();
-            return useProxy();
+        if(!pool.isEmpty()){
+            Proxy proxy = pool.peek();
+            if(--limit == 0) popProxy();;
+            return proxy;
         }
-        if(--limit == 0){
-            pool.remove();
-            limit = DEFAULT_LIMIT;
-        }
-        return proxy;
+        return null;
     }
 
     public synchronized void offerProxy(Proxy proxy){
-        pool.add(proxy);
+        if(!overload()) pool.offer(proxy);
     }
 
-    public synchronized void clearProxy(int num){
-        for(int i=0;i<num;i++){
-            if(!pool.isEmpty()){
-                pool.remove();
-            }
-        }
+    public synchronized void popProxy(){
+        pool.poll();
         limit = DEFAULT_LIMIT;
+    }
+
+    public synchronized void deleteProxy(Proxy proxy){
+        pool.remove(proxy);
+    }
+
+    public boolean checkProxy(Proxy proxy){
+        try{
+            requestUtil.request(
+                "http://city.ip138.com/ip2city.asp",
+                "GET", null, null, requestUtil.getProxy(proxy.getIp(), proxy.getPort()));
+        }catch(Exception e){
+            System.out.println("wrong proxy");
+            return false;
+        }
+        System.out.println("clear proxy");
+        return true;
     }
 
     public int size(){
@@ -73,5 +79,9 @@ public class ProxyPool{
 
     public boolean overload(){
         return pool.size()>maxSize;
+    }
+
+    public Iterator<Proxy> iterator(){
+        return pool.iterator();
     }
 }
