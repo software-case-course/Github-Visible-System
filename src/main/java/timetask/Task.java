@@ -60,7 +60,7 @@ public class Task{
             String str = requestUtil.request("http://www.89ip.cn/api/?&tqsl=50&sxa=&sxb=&tta=&ports=&ktip=&cf=1");
             String[] temp = str.split("\r\n");
             String[] ips = temp[3].split("<br>")[0].split("<BR>");
-            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(10, 50, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 10, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
             for(String ip: ips){
                 String[] pp = ip.split(":");
                 final Proxy proxy = new Proxy(pp[0], Integer.parseInt(pp[1]));
@@ -75,7 +75,7 @@ public class Task{
 
     @Scheduled(fixedRate = 1000 * 60, initialDelay = 1000 * 30)
     public void ProxyFilter(){
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(10, 50, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 10, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
         Iterator<Proxy> iterator = proxyPool.iterator();
         while(iterator.hasNext()){
             final Proxy proxy = iterator.next();
