@@ -44,38 +44,40 @@ public class Task{
         t.start();
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 24, initialDelay = 0)
+    @Scheduled(cron = "0 0 12 * * ?")
     public void getYearCount() throws IOException{
             getLanguagesData("repo");
             getLanguagesData("user");
-            getYearData("repo");
-            getYearData("push");
+            // getYearData("repo");
+            // getYearData("push");
             getRecentYearData("repo");
             getRecentYearData("push");
     }
 
-    @Scheduled(fixedRate = 1000 * 60, initialDelay = 0)
+    @Scheduled(fixedRate = 1000 * 60 * 5, initialDelay = 0)
     public void offerProxy() throws Exception{
         if(!proxyPool.overload()){
-            String str = requestUtil.request("http://www.89ip.cn/api/?&tqsl=50&sxa=&sxb=&tta=&ports=&ktip=&cf=1");
+            String str = requestUtil.request("http://www.89ip.cn/api/?&tqsl=500&sxa=&sxb=&tta=&ports=&ktip=&cf=1");
             String[] temp = str.split("\r\n");
             String[] ips = temp[3].split("<br>")[0].split("<BR>");
-            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 10, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+            ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 10, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(500));
             for(String ip: ips){
-                String[] pp = ip.split(":");
-                final Proxy proxy = new Proxy(pp[0], Integer.parseInt(pp[1]));
-                threadPool.execute(new Runnable(){
-                    public void run(){
-                        if(proxyPool.checkProxy(proxy)) proxyPool.offerProxy(proxy);
-                    }
-                });
+                try{
+                    String[] pp = ip.split(":");
+                    final Proxy proxy = new Proxy(pp[0], Integer.parseInt(pp[1]));
+                    threadPool.execute(new Runnable(){
+                        public void run(){
+                            if(proxyPool.checkProxy(proxy)) proxyPool.offerProxy(proxy);
+                        }
+                    });
+                }catch(Exception e){}
             }   
         }
     }
 
-    @Scheduled(fixedRate = 1000 * 60, initialDelay = 1000 * 30)
+    @Scheduled(fixedRate = 1000 * 60 * 5, initialDelay = 1000 * 60 * 2)
     public void ProxyFilter(){
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 10, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(50));
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(5, 10, 1000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(1000));
         Iterator<Proxy> iterator = proxyPool.iterator();
         while(iterator.hasNext()){
             final Proxy proxy = iterator.next();
@@ -106,7 +108,7 @@ public class Task{
         }
     }
     
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("all")
     private void getYearData(String method){
         for(Language language: Language.values()){
             final Language lan = language;

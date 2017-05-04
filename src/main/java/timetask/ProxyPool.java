@@ -13,7 +13,7 @@ import util.RequestUtil;
 
 @Component
 public class ProxyPool{
-    static final int DEFAULT_MAX = 100;
+    static final int DEFAULT_MAX = 1000;
     static final int DEFAULT_LIMIT = 10;
     Queue<Proxy> pool;
     int maxSize;

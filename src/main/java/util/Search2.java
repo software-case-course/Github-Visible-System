@@ -25,11 +25,11 @@ public class Search2{
     public Search2(){}
 
     public JSONObject searchReposByKey(String q){
-        return searchRepos("https://api.github.com/search/repositories?q=" + q);
+        return searchRepos("https://api.github.com/search/repositories?q=" + q + "&sort=stars&order=desc");
     }
 
     public JSONObject searchReposByLanguage(String language){
-        return searchRepos("https://api.github.com/search/repositories?q=language:" + language);
+        return searchRepos("https://api.github.com/search/repositories?q=language:" + language + "&sort=stars&order=desc");
     }
 
     public JSONObject searchRepos(String url){
@@ -58,8 +58,12 @@ public class Search2{
         while(iterator.hasNext()){
             JSONObject item = (JSONObject)iterator.next();
             Map<String,String> map = new HashMap<String,String>();
-            map.put("full_name", item.getString("full_name"));
-            map.put("html_url", item.getString("html_url"));
+            map.put("full_name", String.valueOf(item.get("full_name")));
+            map.put("html_url", String.valueOf(item.get("html_url")));
+            map.put("description", String.valueOf(item.get("description")));
+            map.put("star", String.valueOf(item.get("stargazers_count")));
+            map.put("watch", String.valueOf(item.get("watchers_count")));
+            map.put("fork", String.valueOf(item.get("forks_count")));
             array.add(map);
         }
         return array;

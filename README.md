@@ -19,7 +19,7 @@
 - 返回类型: jsonArray
 - 参数 (必须写): 
   - q: 仓库关键词
-- 结果: 关键词搜索前30个仓库名字和url
+- 结果: 关键词搜索前30个仓库名字和相关资料
 
 4. http://www.kongin.cn/git-view/search/languagelist
 - 返回类型: json
