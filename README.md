@@ -31,3 +31,33 @@
 - 参数 (必须写): 
   - language: 仓库语言
 - 结果: 语言搜索前30个仓库名字和url
+
+6. http://www.kongin.cn/git-view/repos/Contributor
+- 返回类型: jsonArray
+- 参数 (必须写): 
+  - fullname: 仓库全名（用户/仓库名）
+- 结果: 各个贡献者不同时间提交量
+
+7. http://www.kongin.cn/git-view/repos/WeeklyCommit
+- 返回类型: jsonArray
+- 参数 (必须写): 
+  - fullname: 仓库全名（用户/仓库名）
+- 结果: 一周内不同天（周日至周六）提交总数
+
+8. http://www.kongin.cn/git-view/repos/CommitActivity
+- 返回类型: jsonArray
+- 参数 (必须写): 
+  - fullname: 仓库全名（用户/仓库名）
+- 结果: 每周周日至周六提交数
+
+9. http://www.kongin.cn/git-view/repos/PunchCard
+- 返回类型:  
+- 参数 (必须写): 
+  - fullname: 仓库全名（用户/仓库名）
+- 结果: 一周内不同天（周日至周六）各个小时的提交量
+
+9. http://www.kongin.cn/git-view/repos/CodeFrequency
+- 返回类型:  
+- 参数 (必须写): 
+  - fullname: 仓库全名（用户/仓库名）
+- 结果: 不同时间代码增加和删除量
