@@ -56,7 +56,7 @@
   - fullname: 仓库全名（用户/仓库名）
 - 结果: 一周内不同天（周日至周六）各个小时的提交量
 
-9. http://www.kongin.cn/git-view/repos/CodeFrequency
+10. http://www.kongin.cn/git-view/repos/CodeFrequency
 - 返回类型:  
 - 参数 (必须写): 
   - fullname: 仓库全名（用户/仓库名）
