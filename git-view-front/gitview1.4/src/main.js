@@ -8,6 +8,7 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
 import VueResource from 'vue-resource'
+import store from './store'
 Vue.config.productionTip = false
 Vue.use(ECharts)
 Vue.use(VueResource)
@@ -17,6 +18,7 @@ Vue.component('chart', ECharts)
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

@@ -1,27 +1,15 @@
 <template>
 <div class="main_content">
-    <nav v-if="!show">
-      <!--<p>5MAN.com</p>-->
-      <a href="#">登录</a>
-      <a href="#">仓库</a>
-      <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
-      <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
-      <button type="submit" class="search-icon" @click="search_onclick">
-        <img src="../assets/images/ic_search_white_36dp_1x.png" />
-      </button>
-      <input type="search" id="search" class="search-box" placeholder="搜索仓库" v-model="search_input" @keyup.13="search_onclick"/>
-      <img v-show="!show" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png" class="slide-down-icon" @click="show = !show"/>
-    </nav>
     <transition name="slide">
-      <div v-show="show" class="information-box">
-        <!--<form>
-        </form>-->
-        <!--<div class="user-head-picture-box"></div>-->
-        <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="show = !show"/>
-      </div>
+    <div v-show="this.shownav" class="information-box">
+      <!--<form>
+      </form>-->
+      <!--<div class="user-head-picture-box"></div>-->
+      <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow"/>
+    </div>
     </transition>
     <transition name="fade">
-      <div v-show="show" class="background-shelter" @click="show = !show"></div>
+      <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
     </transition>
     <div>
       <chart id="Echa" class="Echa" v-show="echaShow"></chart>
@@ -33,6 +21,7 @@
 <script>
 import _ from 'lodash'
 import echarts from 'echarts'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'first',
   mounted () {
@@ -49,15 +38,21 @@ export default {
       bardatarepo: [],
       bardatausers: [],
       id: null,
-      show: false,
       echaShow: true,
       barEchaShow: true
     }
+  },
+  computed: {
+    ...mapGetters(['shownav'])
   },
   methods: {
     test () {
       console.log()
     },
+    setshow () {
+      this.changenav()
+    },
+    ...mapActions(['changenav']),
     async getpiedata () {
       this.piedata = []
       var data1 = []
@@ -149,7 +144,7 @@ export default {
       this.bardatarepo = []
       this.bardatausers = []
       await this.$http.get('http://www.kongin.cn/git-view/search/languages').then(response => {
-        console.log(response)
+        // console.log(response)
         for (let i = 0; i < response.body.length; i++) {
           let res = response.body[i]
           let value1 = _.cloneDeep(res.language)
@@ -266,10 +261,6 @@ export default {
         console.log(param.name)
         self.$router.push({ path: '/language', query: {name: param.name} })
       })
-    },
-    search_onclick () {
-      // console.log(this.search_input)
-      this.$router.push({path: '/search', query: {keyword: this.search_input}})
     }
   }
 }
@@ -297,153 +288,4 @@ export default {
   margin-top: 100px;
   float: left;
 }
-nav{
-  width: 100%;
-  min-width: 800px;
-  height: 60px;
-  background-color: #CC0033;
-  position: fixed;
-  top: 0;
-  z-index: 4;
-}
-nav>p{
-  display: inline-block;
-  height: 60px;
-  line-height: 60px;
-  float: right;
-  color: #fff;
-  font-size: 1.6rem;
-  padding: 0 20px;
-  cursor: pointer;
-}
-nav>a{
-  display: inline-block;
-  width: 100px;
-  height: 60px;
-  line-height: 60px;
-  color: #fff;
-  font-size: 1.6rem;
-  text-decoration: none;
-  text-align: center;
-  float:left;
-}
-nav>a:hover{
-  background-color: #dd6d6d;
-}
-nav>a:active{
-  background-color: #840000;
-}
-nav>p:hover{
-  background-color: #dd6d6d;
-}
-nav>p:active{
-  background-color: #840000;
-}
-/*nav>img{
-  margin-top: 24px;
-  cursor: pointer;
-}*/
-.background-shelter{
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  opacity: 0.6;
-  position: absolute;
-  z-index: 2;
-}
-.information-box{
-  width: 100%;
-  height: 62%;
-  background-color: #CC0033;
-  position: absolute;
-  z-index: 3;
-}
-.slide-enter-active{
-  animation-name: slide-down;
-  animation-duration: 0.5s;
-}
-.slide-leave-active{
-  animation-name: slide-up;
-  animation-duration: 0.5s;
-}
-@keyframes slide-down{
-  0%{
-    height: 60px;
-  }
-  100%{
-    height: 62%;
-  }
-}
-@keyframes slide-up{
-  0%{
-    height: 62%;
-  }
-  100%{
-    height: 0;
-  }
-}
-.fade-enter-active{
-  animation-name: fade-in;
-  animation-duration: 0.5s;
-}
-.fade-leave-active{
-  animation-name: fade-out;
-  animation-duration: 0.5s;
-}
-@keyframes fade-in{
-  0%{
-    opacity: 0;
-  }
-  100%{
-    opacity: 0.6;
-  }
-}@keyframes fade-out{
-  0%{
-    opacity: 0.6;
-  }
-  100%{
-    opacity: 0;
-  }
-}
-.slide-up-icon{
-  position: absolute;
-  bottom: 0;
-  right: 50%;
-  cursor: pointer;
-}
-.slide-down-icon{
-  position: absolute;
-  bottom: 0;
-  right: 50%;
-  cursor: pointer;
-}
-.search-box{
-  width: 200px;
-  height: 30px;
-  margin: 15px 0;
-  border-radius: 3px;
-  border: none;
-  padding: 5px;
-  outline: none;
-  font-size: 16px;
-  float: right;
-}
-.search-icon{
-  height: 40px;
-  margin: 10px 0;
-  background: transparent;
-  float: right;
-  outline: none;
-  border: none;
-  cursor: pointer;
-}
-/*.user-head-picture-box{
-  width: 200px;
-  height: 200px;
-  background-color: #000;
-  position: absolute;
-  bottom: 30%;
-  left: 15%;
-  border: 5px solid #fff;
-}*/
 </style>

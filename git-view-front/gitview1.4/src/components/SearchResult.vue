@@ -1,17 +1,17 @@
 <template>
 <div class="searchresult_content">
-  <nav v-if="!show">
-      <!--<p>5MAN.com</p>-->
+  <!--<nav v-if="!show">
+      <p>5MAN.com</p>
       <a href="#">登录</a>
       <a href="#">仓库</a>
-      <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
-      <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
+      <p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
+      <p @click="echaShow = !echaShow">Github占比前十语言</p>
       <button type="submit" class="search-icon" @click="search_onclick">
         <img src="../assets/images/ic_search_white_36dp_1x.png" />
       </button>
       <input type="search" id="search" class="search-box" placeholder="搜索仓库" v-model="search_input" @keyup.13="search_onclick"/>
       <img v-show="!show" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png" class="slide-down-icon" @click="show = !show"/>
-  </nav>
+  </nav>-->
   <transition name="slide">
       <div v-show="show" class="information-box">
         <!--<form>
@@ -25,7 +25,7 @@
     </transition>
   <div class="List">
     <div class = "items">
-      <ul v-for="item in searchdata">
+      <ul v-for="item in searchdatare">
       <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
       <li>
             Description:&nbsp &nbsp{{item.des}}
@@ -44,7 +44,7 @@
           </li>
           <li>
             <a>The Owner:&nbsp</a>
-        <a v-html="item.ownername" v-bind:href="item.ownerurl" target="_blank"></a>
+        <a v-html="item.owner.login" v-bind:href="item.owner.html_url" target="_blank"></a>
       </li>
     </ul>
     </div>
@@ -53,46 +53,51 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import config from '../config'
 export default {
   name: 'search',
-  mounted () {
-    this.$nextTick(function () {
-      this.keyword = _.cloneDeep(this.$route.query.keyword)
-      console.log(this.keyword)
-      this.getsearchresult()
-    })
+  created () {
+    this.getdata()
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'getdata'
   },
   data () {
     return {
-      searchdata: [],
+      searchdatare: [],
       keyword: null,
       show: false
     }
   },
   methods: {
-    async getsearchresult () {
-      var data1 = []
-      await this.$http.get('https://api.github.com/search/repositories?q=' + this.keyword + '&sort=forks').then(response => {
-        console.log(response)
-        for (let i = 0; i < response.body.items.length; i++) {
-          let res = response.body.items[i]
-          var name = _.cloneDeep(res.name)
-          var des = _.cloneDeep(res.description)
-          var fork = _.cloneDeep(res.forks_count)
-          var watch = _.cloneDeep(res.watchers_count)
-          var star = _.cloneDeep(res.stargazers_count)
-          var url = _.cloneDeep(res.html_url)
-          var ownername = _.cloneDeep(res.owner.login)
-          var ownerurl = _.cloneDeep(res.owner.html_url)
-          var score = _.cloneDeep(res.score)
-          data1.push({name, des, watch, fork, star, url, ownername, ownerurl, score})
-        }
-        console.log(data1)
-        this.searchdata = _.cloneDeep(data1)
-        // console.log(this.searchdata)
-      })
+    getdata () {
+      this.searchdatare = config.searchdata
     },
+    // async getsearchresult () {
+      // var data1 = []
+      // await this.$http.get('https://api.github.com/search/repositories?q=' + this.keyword + '&sort=forks').then(response => {
+        // this.searchdata = response.body.items
+      // console.log(this.$parent.$data)
+      // console.log(this.searchdatare)
+        // for (let i = 0; i < response.body.items.length; i++) {
+        //   let res = response.body.items[i]
+        //   var name = _.cloneDeep(res.name)
+        //   var des = _.cloneDeep(res.description)
+        //   var fork = _.cloneDeep(res.forks_count)
+        //   var watch = _.cloneDeep(res.watchers_count)
+        //   var star = _.cloneDeep(res.stargazers_count)
+        //   var url = _.cloneDeep(res.html_url)
+        //   var ownername = _.cloneDeep(res.owner.login)
+        //   var ownerurl = _.cloneDeep(res.owner.html_url)
+        //   var score = _.cloneDeep(res.score)
+        //   data1.push({name, des, watch, fork, star, url, ownername, ownerurl, score})
+        // }
+        // console.log(data1)
+        // this.searchdata = _.cloneDeep(data1)
+        // console.log(this.searchdata)
+      // })
+    // },
     search_onclick () {
       // console.log(this.search_input)
       this.$router.push({path: '/search', query: {keyword: this.search_input}})

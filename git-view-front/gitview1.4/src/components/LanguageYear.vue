@@ -1,8 +1,19 @@
 <template>
 <div class="languageyear_content">
-    <nav>
+    <!--<nav>
       <a href="#" class="back-icon"><img src="../assets/images/ic_arrow_back_white_36dp_1x.png"/></a>
-    </nav>
+    </nav>-->
+    <transition name="slide">
+    <div v-show="this.shownav" class="information-box">
+      <!--<form>
+      </form>-->
+      <!--<div class="user-head-picture-box"></div>-->
+      <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow"/>
+    </div>
+    </transition>
+    <transition name="fade">
+      <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
+    </transition>
     <chart id="linegraph" class="linegraph"></chart>
     <div class="List">
       <ul v-for="item in languagetop30data">
@@ -32,8 +43,12 @@
 <script>
 import _ from 'lodash'
 import echarts from 'echarts'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Languageyear',
+  computed: {
+    ...mapGetters(['shownav'])
+  },
   mounted () {
     this.$nextTick(function () {
       var ndate = new Date()
@@ -48,6 +63,10 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['changenav']),
+    setshow () {
+      this.changenav()
+    },
     async getbackdata () {
       var data1 = []
       var data2 = []
@@ -61,17 +80,17 @@ export default {
           if (res.language === this.languageid && res.year === year1) {
             i = 0
             year1++
-            var repo = _.cloneDeep(res.repo)
-            var pushnum = _.cloneDeep(res.push)
-            var yearnum = _.cloneDeep(res.year)
+            var repo = (res.repo)
+            var pushnum = (res.push)
+            var yearnum = (res.year)
             data1.push(repo)
             data2.push(pushnum)
             data3.push(yearnum)
           }
         }
-        this.repodata = _.cloneDeep(data1)
-        this.pushdata = _.cloneDeep(data2)
-        this.yeardata = _.cloneDeep(data3)
+        this.repodata = (data1)
+        this.pushdata = (data2)
+        this.yeardata = (data3)
         // console.log(this.repodata)
         // console.log(this.pushdata)
         // console.log(this.yeardata)
@@ -166,7 +185,7 @@ export default {
     async languagetop30 () {
       var data1 = []
       await this.$http.get('https://api.github.com/search/repositories?q=language:' + this.languageid + '&sort=forks').then(response => {
-        console.log(response)
+        // console.log(response)
         for (let i = 0; i < response.body.items.length; i++) {
           let res = response.body.items[i]
           var name = _.cloneDeep(res.name)
