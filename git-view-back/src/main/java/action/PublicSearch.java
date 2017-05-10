@@ -2,7 +2,9 @@ package action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,10 +12,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import po.AreaDetail;
 import po.Language;
 import po.LanguageDetail;
+import po.WorldArea;
 import po.YearDetail;
 import service.LanguageDetailService;
+import service.LocationDetailService;
 import service.YearDetailService;
 import util.RequestUtil;
 import util.Search;
@@ -30,6 +35,9 @@ public class PublicSearch{
 
     @Autowired
     YearDetailService yearDetailService;
+
+    @Autowired
+    LocationDetailService locationDetailService;
 
     /**
      * @param repo
@@ -82,5 +90,27 @@ public class PublicSearch{
             list.add(language.getValue());
         }
         return list;
+    }
+
+    @ResponseBody
+    @RequestMapping("/country")
+    public List<AreaDetail> countryUserCount(String country){
+        if(country == null) return locationDetailService.findCountries();
+        return locationDetailService.findByCountry(country);
+    }
+
+    @ResponseBody
+    @RequestMapping("/areas")
+    public Map<String,List<String>> allAreas(){
+        Map<String,List<String>> map = new HashMap<String,List<String>>();
+        for(WorldArea country: WorldArea.values()){
+            List<AreaDetail> areas = locationDetailService.findByCountry(country.getName());
+            List<String> list = new ArrayList<String>();
+            for(AreaDetail area: areas){
+                if(!area.getLocation().equals(country.getName())) list.add(area.getLocation());
+            }
+            map.put(country.getName(), list);
+        }
+        return map;
     }
 }

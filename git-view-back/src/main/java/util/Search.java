@@ -10,6 +10,7 @@ import com.jcabi.github.RtGithub;
 import com.jcabi.http.Request;
 import com.jcabi.http.response.JsonResponse;
 
+import po.Area;
 import po.Language;
 
 public class Search{
@@ -55,6 +56,13 @@ public class Search{
             repos.add(item.getString("full_name"));
         }
         return repos;
+    }
+
+    public static int LocationUserCount(Area location) throws IOException{
+        System.out.println("Counting Users in location: "+ location.getName() + "...");
+        JsonObject json = UserJson("location:"+location.getValue());
+        int count = json.getInt("total_count");
+        return count;
     }
 
     public static JsonObject ReposJson(String q) throws IOException{

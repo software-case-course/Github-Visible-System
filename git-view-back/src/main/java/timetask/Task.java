@@ -7,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import po.AmericanArea;
+import po.Area;
+import po.ChineseArea;
 import po.Language;
+import po.WorldArea;
 import po.YearDetail;
 import service.LanguageDetailService;
+import service.LocationDetailService;
 import service.YearDetailService;
 import util.RequestUtil;
 import util.Search;
@@ -24,6 +29,9 @@ public class Task{
 
     @Autowired
     YearDetailService yearDetailService;
+
+    @Autowired
+    LocationDetailService locationDetailService;
 
     @Autowired
     RequestUtil requestUtil;
@@ -49,6 +57,14 @@ public class Task{
             getRecentYearData("repo");
             getRecentYearData("push");
     }
+
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 24, initialDelay = 0)
+    public void getLocationCount() throws IOException{
+        getCountriesData();
+        getChineseData();
+        getAmericanData();
+    }
+
 
     private void getLanguagesData(String method){
         for(Language language: Language.values()){
@@ -119,5 +135,39 @@ public class Task{
             });
             thread.start();
         }
+    }
+
+    private void getCountriesData(){
+        for(WorldArea worldArea: WorldArea.values()){
+            getLocationData(worldArea, worldArea);
+        }
+    }
+
+    private void getChineseData(){
+        for(ChineseArea chineseArea: ChineseArea.values()){
+            getLocationData(chineseArea, WorldArea.China);
+        }
+    }
+
+    private void getAmericanData(){
+        for(AmericanArea americanArea: AmericanArea.values()){
+            getLocationData(americanArea, WorldArea.USA);
+        }
+    }
+
+    private void getLocationData(Area location, WorldArea country){
+        final Area loc = location;
+        final String cou = country.getName();
+        Thread thread = new Thread(new Runnable(){
+            public void run(){
+                try{
+                    requestLimit.consume();
+                    locationDetailService.updateUsers(loc.getName(), cou, Search.LocationUserCount(loc));
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }
