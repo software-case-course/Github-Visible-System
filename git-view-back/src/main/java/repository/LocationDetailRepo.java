@@ -13,8 +13,8 @@ public interface LocationDetailRepo extends CrudRepository<AreaDetail,Integer>{
     @SuppressWarnings("unchecked")
     public AreaDetail save(AreaDetail areaDetail);
 
-    @Query("from AreaDetail a where a.location=:location")
-    public List<AreaDetail> findByLocation(@Param("location")String location);
+    @Query("select a from AreaDetail a where a.location=:location")
+    public AreaDetail findByLocation(@Param("location")String location);
 
     @Query("from AreaDetail a where a.country=:country and a.country!=a.location")
     public List<AreaDetail> findByCountry(@Param("country")String country);

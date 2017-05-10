@@ -17,14 +17,14 @@ public class LocationDetailService{
 
     @Transactional
     public void updateUsers(String location, String country, int users){
-        if(locationDetailRepo.findByLocation(location).size()>0) locationDetailRepo.updateUsers(location, users);
+        if(locationDetailRepo.findByLocation(location)!=null) locationDetailRepo.updateUsers(location, users);
         else{
             AreaDetail detail = new AreaDetail(location,country,users);
             locationDetailRepo.save(detail);
         }
     }
 
-    public List<AreaDetail> findByLocation(String location){
+    public AreaDetail findByLocation(String location){
         return locationDetailRepo.findByLocation(location);
     }
 

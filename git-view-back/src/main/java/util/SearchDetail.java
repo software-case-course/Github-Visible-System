@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class SearchDetail{
-    final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    final String DATE_FORMAT = "yyyy-MM-dd";
     @Autowired
     RequestUtil requestUtil;
 
@@ -129,12 +129,14 @@ public class SearchDetail{
         return date;  
     }
 
+   
     private String searchStats(String fullname, String part){
         String result = null;
         try{
-            result = requestUtil.request("https://api.github.com/repos/"+fullname+"/stats/"+part);
+            do{
+                result = requestUtil.request("https://api.github.com/repos/"+fullname+"/stats/"+part);
+            }while(result.startsWith("{"));
         }catch(Exception e){
-
         }
         return result;
     }

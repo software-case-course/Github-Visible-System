@@ -58,7 +58,7 @@ public class Task{
             getRecentYearData("push");
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 24, initialDelay = 0)
+    @Scheduled(cron = "0 0 10 * * ?")
     public void getLocationCount() throws IOException{
         getCountriesData();
         getChineseData();

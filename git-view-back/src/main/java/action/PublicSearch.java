@@ -113,4 +113,10 @@ public class PublicSearch{
         }
         return map;
     }
+
+    @ResponseBody
+    @RequestMapping("/location")
+    public AreaDetail locationUserCount(String location){
+        return locationDetailService.findByLocation(location);
+    }
 }
