@@ -13,16 +13,16 @@
       <img v-show="!show" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png" class="slide-down-icon" @click="show = !show"/>
   </nav>-->
   <transition name="slide">
-      <div v-show="show" class="information-box">
-        <!--<form>
-        </form>-->
-        <!--<div class="user-head-picture-box"></div>-->
-        <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="show = !show"/>
-      </div>
-    </transition>
-    <transition name="fade">
-      <div v-show="show" class="background-shelter" @click="show = !show"></div>
-    </transition>
+    <div v-show="show" class="information-box">
+      <!--<form>
+      </form>-->
+      <!--<div class="user-head-picture-box"></div>-->
+      <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="show = !show"/>
+    </div>
+  </transition>
+  <transition name="fade">
+    <div v-show="show" class="background-shelter" @click="show = !show"></div>
+  </transition>
   <div class="List">
     <div class = "items">
       <ul v-for="item in searchdatare">

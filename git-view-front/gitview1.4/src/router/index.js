@@ -3,11 +3,15 @@ import Router from 'vue-router'
 import First from '@/components/First'
 import LanguageYear from '@/components/LanguageYear'
 import SearchResult from '@/components/SearchResult'
-import '../../node_modules/china.js'
+import worlddis from '@/components/WorldDistribute'
+import Nav from '@/components/Nav'
+
 import '../assets/styles/common.css'
 import '../assets/styles/initial.css'
 import '../assets/styles/navigation.css'
-import Nav from '@/components/Nav'
+import '../../node_modules/map/world.js'
+import '../../node_modules/map/usa.js'
+import '../../node_modules/map/china.js'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +34,11 @@ export default new Router({
           path: '/search',
           name: 'search',
           component: SearchResult
+        },
+        {
+          path: '/worlddistribute',
+          name: '/worlddis',
+          component: worlddis
         }
       ]
     }

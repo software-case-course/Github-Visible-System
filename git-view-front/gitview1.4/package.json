@@ -1,5 +1,5 @@
 {
-  "name": "gitview3.0",
+  "name": "gitview1.4",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Telent1 <1418347552@qq.com>",
@@ -11,14 +11,15 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "echarts": "^3.3.2",
+    "echarts": "^3.5.4",
     "lodash": "^4.17.4",
     "vue": "^2.2.2",
     "vue-echarts": "^2.3.8",
     "vue-resource": "^1.3.1",
     "vue-router": "^2.3.0",
     "vuex": "^2.3.1",
-    "vuex-actions": "^1.1.1"
+    "vuex-actions": "^1.1.1",
+    "zrender": "^3.4.4"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

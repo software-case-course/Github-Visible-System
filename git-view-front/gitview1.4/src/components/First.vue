@@ -1,16 +1,16 @@
 <template>
 <div class="main_content">
-    <transition name="slide">
+  <transition name="slide">
     <div v-show="this.shownav" class="information-box">
       <!--<form>
       </form>-->
       <!--<div class="user-head-picture-box"></div>-->
       <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow"/>
     </div>
-    </transition>
-    <transition name="fade">
-      <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
-    </transition>
+  </transition>
+  <transition name="fade">
+    <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
+  </transition>
     <div>
       <chart id="Echa" class="Echa" v-show="echaShow"></chart>
       <chart id="barEcha" class="barEcha" v-show="barEchaShow"></chart>
@@ -60,11 +60,11 @@ export default {
         // console.log(response)
         for (let i = 0; i < response.body.length; i++) {
           let res = response.body[i]
-          var value = _.cloneDeep(res.repo)
-          var name = _.cloneDeep(res.language)
+          var value = (res.repo)
+          var name = (res.language)
           data1.push({value, name})
-          this.piedata = _.cloneDeep(data1)
         }
+        this.piedata = _.cloneDeep(data1)
         // console.log(this.piedata)
         this.drawpiegraph('Echa')
       })
@@ -96,7 +96,7 @@ export default {
         },
         series: [
           {
-            name: '访问来源',
+            name: '语言及仓库数量：',
             type: 'pie',
             radius: '75%',
             center: ['50%', '50%'],
