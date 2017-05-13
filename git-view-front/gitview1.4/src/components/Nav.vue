@@ -3,7 +3,7 @@
   <nav v-if="!this.shownav">
     <!--<p>5MAN.com</p>-->
     <a href="#">登录</a>
-    <a href="#">仓库</a>
+    <a  v-on:click="worlddis">全球分布</a>
     <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
     <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
     <button type="submit" class="search-icon" @click="search_onclick">
@@ -33,6 +33,9 @@ export default {
       this.changenav()
       // console.log(this.shownav)
       // config.showNav = !config.showNav
+    },
+    worlddis () {
+      this.$router.replace({path: '/worlddistribute'})
     }
   },
   computed: {

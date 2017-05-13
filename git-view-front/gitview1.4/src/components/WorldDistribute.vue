@@ -265,6 +265,5 @@ export default {
 
 }
 #mapchart{
-margin-top:10% ;
 }
 </style>
