@@ -9,9 +9,9 @@ import Nav from '@/components/Nav'
 import '../assets/styles/common.css'
 import '../assets/styles/initial.css'
 import '../assets/styles/navigation.css'
-import '../../node_modules/map/world.js'
-import '../../node_modules/map/usa.js'
-import '../../node_modules/map/china.js'
+import '../../map/china.js'
+import '../../map/usa.js'
+import '../../map/world.js'
 Vue.use(Router)
 
 export default new Router({
