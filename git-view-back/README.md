@@ -3,7 +3,7 @@
 ##### 5 men
 
 一、搜索 api:
-1. http://www.kongin.cn/git-view/search/languages
+1. http://www.kongin.cn/git-view/search/support_languages
 - 返回类型: jsonArray (language -> repository count)
 - 参数: 无
 - 结果: 不同语言的仓库数量
@@ -11,7 +11,7 @@
 2. http://www.kongin.cn/git-view/search/year
 - 返回类型: json (language,year -> user, count)
 - 参数 (如果不写参数，返回全部数据): 
-  - language: 仓库语言
+  - language: 仓库语言（看搜索 api 1 得到的数据）
   - year: 仓库创建年份
 - 结果: 不同语言在不同年份的用户和仓库数量
 
@@ -52,7 +52,7 @@
 - 结果: 不同时间代码增加和删除量
 
 三、地区 api:
-1. http://www.kongin.cn/git-view/search/areas
+1. http://www.kongin.cn/git-view/search/support_areas
 - 返回类型:  json
 - 参数: 无 
 - 结果: 本站点支持查询的地区和国家名
@@ -60,11 +60,18 @@
 2. http://www.kongin.cn/git-view/search/country
 - 返回类型:  jsonArray
 - 参数 (不写时返回所有支持国家用户数量): 
-  - country: 国家名（看 api 11 得到的数据）
+  - country: 国家名（看地区 api 1 得到的数据）
 - 结果: 该国家的地区用户分布数据
 
 3. http://www.kongin.cn/git-view/search/location
 - 返回类型:  json
 - 参数 (必须写): 
-  - location: 地区名（看 api 11 得到的数据）
+  - location: 地区名（看地区 api 1 得到的数据）
 - 结果: 该地区用户数量
+
+4. http://www.kongin.cn/git-view/search/area_language
+- 返回类型:  jsonArray
+- 参数 (不写时返回所有结果): 
+  - location: 地区名（看地区 api 1 得到的数据）
+  - language: 语言（看搜索 api 1 得到的数据）
+- 结果: 指定地区或指定语言用户数量

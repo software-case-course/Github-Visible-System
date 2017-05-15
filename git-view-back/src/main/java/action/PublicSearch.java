@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import po.AreaDetail;
+import po.AreaLanguage;
 import po.Language;
 import po.LanguageDetail;
 import po.WorldArea;
 import po.YearDetail;
+import service.AreaLanguageService;
 import service.LanguageDetailService;
 import service.LocationDetailService;
 import service.YearDetailService;
@@ -39,6 +41,9 @@ public class PublicSearch{
     @Autowired
     LocationDetailService locationDetailService;
 
+    @Autowired
+    AreaLanguageService areaLanguageService;
+
     /**
      * @param repo
      * @param sort stars|forks|updated
@@ -58,7 +63,7 @@ public class PublicSearch{
     // }
 
     @ResponseBody
-    @RequestMapping("/languages")
+    @RequestMapping("/support_languages")
     public List<LanguageDetail> languageDetail() throws IOException{
         return languageDetailService.findAll();
     }
@@ -100,7 +105,7 @@ public class PublicSearch{
     }
 
     @ResponseBody
-    @RequestMapping("/areas")
+    @RequestMapping("/support_areas")
     public Map<String,List<String>> allAreas(){
         Map<String,List<String>> map = new HashMap<String,List<String>>();
         for(WorldArea country: WorldArea.values()){
@@ -118,5 +123,18 @@ public class PublicSearch{
     @RequestMapping("/location")
     public AreaDetail locationUserCount(String location){
         return locationDetailService.findByLocation(location);
+    }
+
+    @ResponseBody
+    @RequestMapping("/area_language")
+    public List<AreaLanguage> areaLanguageCount(String location, String language){
+        if(language!=null&&location==null) return areaLanguageService.findByLanguage(language);
+        if(location!=null&&language==null) return areaLanguageService.findByArea(location);
+        if(location!=null&&language!=null) {
+            List<AreaLanguage> list = new ArrayList<AreaLanguage>();
+            list.add(areaLanguageService.findByAreaAndLanguage(location, language));
+            return list;
+        }
+        return areaLanguageService.findAll();
     }
 }
