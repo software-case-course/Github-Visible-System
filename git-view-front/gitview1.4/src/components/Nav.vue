@@ -1,9 +1,9 @@
 <template>
 <div class="nav_content">
   <nav v-if="!this.shownav">
+    <a href="#">首页</a>
     <!--<p>5MAN.com</p>-->
-    <a href="#">登录</a>
-    <a  v-on:click="worlddis">全球分布</a>
+    <a>登录</a>
     <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
     <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
     <button type="submit" class="search-icon" @click="search_onclick">
@@ -34,9 +34,7 @@ export default {
       // console.log(this.shownav)
       // config.showNav = !config.showNav
     },
-    worlddis () {
-      this.$router.replace({path: '/worlddistribute'})
-    }
+    
   },
   computed: {
     ...mapGetters(['shownav'])
@@ -62,6 +60,10 @@ export default {
 }
 </script>
 <style scoped>
+.nav_content{
+  width: 100%;
+  overflow: auto;
+}
 nav{
   width: 100%;
   min-width: 800px;
@@ -70,6 +72,7 @@ nav{
   position: fixed;
   top: 0;
   z-index: 4;
+  box-shadow: 0 0 20px #000;
 }
 nav>p{
   display: inline-block;
@@ -79,7 +82,6 @@ nav>p{
   color: #fff;
   font-size: 1.6rem;
   padding: 0 20px;
-  cursor: pointer;
 }
 nav>a{
   display: inline-block;
@@ -91,6 +93,7 @@ nav>a{
   text-decoration: none;
   text-align: center;
   float:left;
+  cursor: pointer;
 }
 nav>a:hover{
   background-color: #dd6d6d;
@@ -108,46 +111,6 @@ nav>p:active{
   margin-top: 24px;
   cursor: pointer;
 }*/
-.slide-enter-active{
-  animation-name: slide-down;
-  animation-duration: 0.5s;
-}
-.slide-leave-active{
-  animation-name: slide-up;
-  animation-duration: 0.5s;
-}
-@keyframes slide-down{
-  0%{
-    height: 60px;
-  }
-  100%{
-    height: 62%;
-  }
-}
-@keyframes slide-up{
-  0%{
-    height: 62%;
-  }
-  100%{
-    height: 0;
-  }
-}
-.fade-enter-active{
-  animation-name: fade-in;
-  animation-duration: 0.5s;
-}
-.fade-leave-active{
-  animation-name: fade-out;
-  animation-duration: 0.5s;
-}
-@keyframes fade-in{
-  0%{
-    opacity: 0;
-  }
-  100%{
-    opacity: 0.6;
-  }
-}
 .slide-down-icon{
   position: absolute;
   bottom: 0;

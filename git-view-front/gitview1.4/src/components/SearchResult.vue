@@ -1,33 +1,21 @@
 <template>
-<div class="searchresult_content">
-  <!--<nav v-if="!show">
-      <p>5MAN.com</p>
-      <a href="#">登录</a>
-      <a href="#">仓库</a>
-      <p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
-      <p @click="echaShow = !echaShow">Github占比前十语言</p>
-      <button type="submit" class="search-icon" @click="search_onclick">
-        <img src="../assets/images/ic_search_white_36dp_1x.png" />
-      </button>
-      <input type="search" id="search" class="search-box" placeholder="搜索仓库" v-model="search_input" @keyup.13="search_onclick"/>
-      <img v-show="!show" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png" class="slide-down-icon" @click="show = !show"/>
-  </nav>-->
-  <transition name="slide">
-    <div v-show="show" class="information-box">
-      <!--<form>
+  <div class="searchresult_content">
+    <transition name="slide">
+      <div v-show="this.shownav" class="information-box">
+        <!--<form>
       </form>-->
-      <!--<div class="user-head-picture-box"></div>-->
-      <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="show = !show"/>
-    </div>
-  </transition>
-  <transition name="fade">
-    <div v-show="show" class="background-shelter" @click="show = !show"></div>
-  </transition>
-  <div class="List">
-    <div class = "items">
-      <ul v-for="item in searchdatare">
-      <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
-      <li>
+        <!--<div class="user-head-picture-box"></div>-->
+        <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow" />
+      </div>
+    </transition>
+    <transition name="fade">
+      <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
+    </transition>
+    <div class="List">
+      <div class="items">
+        <ul v-for="item in searchdatare">
+          <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
+          <li>
             Description:&nbsp &nbsp{{item.des}}
           </li>
           <li>
@@ -44,66 +32,77 @@
           </li>
           <li>
             <a>The Owner:&nbsp</a>
-        <a v-html="item.owner.login" v-bind:href="item.owner.html_url" target="_blank"></a>
-      </li>
-    </ul>
+            <a v-html="item.owner.login" v-bind:href="item.owner.html_url" target="_blank"></a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import config from '../config'
-export default {
-  name: 'search',
-  created () {
-    this.getdata()
-  },
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    '$route': 'getdata'
-  },
-  data () {
-    return {
-      searchdatare: [],
-      keyword: null,
-      show: false
-    }
-  },
-  methods: {
-    getdata () {
-      this.searchdatare = config.searchdata
+  import config from '../config'
+  import {
+        mapGetters,
+        mapActions
+    } from 'vuex'
+  export default {
+    name: 'search',
+    created() {
+      this.getdata()
     },
-    // async getsearchresult () {
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'getdata'
+    },
+    computed: {
+            ...mapGetters(['shownav'])
+    },
+    data() {
+      return {
+        searchdatare: [],
+        keyword: null,
+        show: false
+      }
+    },
+    methods: {
+      ...mapActions(['changenav']),
+            setshow() {
+                this.changenav()
+            },
+      getdata() {
+        this.searchdatare = config.searchdata
+      },
+      // async getsearchresult () {
       // var data1 = []
       // await this.$http.get('https://api.github.com/search/repositories?q=' + this.keyword + '&sort=forks').then(response => {
-        // this.searchdata = response.body.items
+      // this.searchdata = response.body.items
       // console.log(this.$parent.$data)
       // console.log(this.searchdatare)
-        // for (let i = 0; i < response.body.items.length; i++) {
-        //   let res = response.body.items[i]
-        //   var name = _.cloneDeep(res.name)
-        //   var des = _.cloneDeep(res.description)
-        //   var fork = _.cloneDeep(res.forks_count)
-        //   var watch = _.cloneDeep(res.watchers_count)
-        //   var star = _.cloneDeep(res.stargazers_count)
-        //   var url = _.cloneDeep(res.html_url)
-        //   var ownername = _.cloneDeep(res.owner.login)
-        //   var ownerurl = _.cloneDeep(res.owner.html_url)
-        //   var score = _.cloneDeep(res.score)
-        //   data1.push({name, des, watch, fork, star, url, ownername, ownerurl, score})
-        // }
-        // console.log(data1)
-        // this.searchdata = _.cloneDeep(data1)
-        // console.log(this.searchdata)
+      // for (let i = 0; i < response.body.items.length; i++) {
+      //   let res = response.body.items[i]
+      //   var name = _.cloneDeep(res.name)
+      //   var des = _.cloneDeep(res.description)
+      //   var fork = _.cloneDeep(res.forks_count)
+      //   var watch = _.cloneDeep(res.watchers_count)
+      //   var star = _.cloneDeep(res.stargazers_count)
+      //   var url = _.cloneDeep(res.html_url)
+      //   var ownername = _.cloneDeep(res.owner.login)
+      //   var ownerurl = _.cloneDeep(res.owner.html_url)
+      //   var score = _.cloneDeep(res.score)
+      //   data1.push({name, des, watch, fork, star, url, ownername, ownerurl, score})
+      // }
+      // console.log(data1)
+      // this.searchdata = _.cloneDeep(data1)
+      // console.log(this.searchdata)
       // })
-    // },
-    search_onclick () {
-      // console.log(this.search_input)
-      this.$router.push({path: '/search', query: {keyword: this.search_input}})
+      // },
+      search_onclick() {
+        // console.log(this.search_input)
+        this.$router.push({ path: '/search', query: { keyword: this.search_input } })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
@@ -211,65 +210,7 @@ nav>p:active{
   top: 0;
   z-index: 3;
 }
-.slide-enter-active{
-  animation-name: slide-down;
-  animation-duration: 0.5s;
-}
-.slide-leave-active{
-  animation-name: slide-up;
-  animation-duration: 0.5s;
-}
-@keyframes slide-down{
-  0%{
-    height: 60px;
-  }
-  100%{
-    height: 62%;
-  }
-}
-@keyframes slide-up{
-  0%{
-    height: 62%;
-  }
-  100%{
-    height: 0;
-  }
-}
-.fade-enter-active{
-  animation-name: fade-in;
-  animation-duration: 0.5s;
-}
-.fade-leave-active{
-  animation-name: fade-out;
-  animation-duration: 0.5s;
-}
-@keyframes fade-in{
-  0%{
-    opacity: 0;
-  }
-  100%{
-    opacity: 0.6;
-  }
-}@keyframes fade-out{
-  0%{
-    opacity: 0.6;
-  }
-  100%{
-    opacity: 0;
-  }
-}
-.slide-up-icon{
-  position: absolute;
-  bottom: 0;
-  right: 50%;
-  cursor: pointer;
-}
-.slide-down-icon{
-  position: absolute;
-  bottom: 0;
-  right: 50%;
-  cursor: pointer;
-}
+
 .search-box{
   width: 200px;
   height: 30px;
