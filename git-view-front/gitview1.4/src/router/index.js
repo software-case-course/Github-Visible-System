@@ -5,6 +5,7 @@ import LanguageYear from '@/components/LanguageYear'
 import SearchResult from '@/components/SearchResult'
 import worlddis from '@/components/WorldDistribute'
 import Nav from '@/components/Nav'
+import Person from '@/components/Person'
 
 import '../assets/styles/common.css'
 import '../assets/styles/initial.css'
@@ -39,6 +40,11 @@ export default new Router({
           path: '/worlddistribute',
           name: '/worlddis',
           component: worlddis
+        },
+        {
+          path: '/person',
+          name: 'person',
+          component: Person
         }
       ]
     }
