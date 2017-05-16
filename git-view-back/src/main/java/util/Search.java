@@ -42,7 +42,7 @@ public class Search{
     }
 
     public static int LanguageUserCount(Language language) throws IOException{
-        System.out.println("Counting Users: "+ language.getValue() + "...");
+        System.out.println("Counting Users for language: "+ language.getValue() + "...");
         JsonObject json = UserJson("language:"+language.getValue());
         int count = json.getInt("total_count");
         return count;
@@ -61,6 +61,13 @@ public class Search{
     public static int LocationUserCount(Area location) throws IOException{
         System.out.println("Counting Users in location: "+ location.getName() + "...");
         JsonObject json = UserJson("location:"+location.getValue());
+        int count = json.getInt("total_count");
+        return count;
+    }
+
+    public static int LanguageAndLocationUserCount(Language language, Area location) throws IOException{
+        System.out.println("Counting Users for language: "+ language.getValue() + " and location: " + location.getName() + "...");
+        JsonObject json = UserJson("language:"+language.getValue()+" location:"+location.getValue());
         int count = json.getInt("total_count");
         return count;
     }

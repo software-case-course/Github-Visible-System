@@ -13,6 +13,7 @@ import po.ChineseArea;
 import po.Language;
 import po.WorldArea;
 import po.YearDetail;
+import service.AreaLanguageService;
 import service.LanguageDetailService;
 import service.LocationDetailService;
 import service.YearDetailService;
@@ -34,7 +35,13 @@ public class Task{
     LocationDetailService locationDetailService;
 
     @Autowired
+    AreaLanguageService areaLanguageService;
+
+    @Autowired
     RequestUtil requestUtil;
+
+    @Autowired
+    ThreadPool threadPool;
 
     public Task(){}
 
@@ -58,11 +65,18 @@ public class Task{
             getRecentYearData("push");
     }
 
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 15 10 16 * ?")
     public void getLocationCount() throws IOException{
         getCountriesData();
         getChineseData();
         getAmericanData();
+    }
+
+    @Scheduled(cron = "0 0 19 15 * ?")
+    public void getAreaLanguageCount(){
+        getCountriesAreaData();
+        getAmericanAreaData();
+        getChineseAreaData();
     }
 
 
@@ -70,7 +84,7 @@ public class Task{
         for(Language language: Language.values()){
             final Language lan = language;
             final String met = method;
-            Thread thread = new Thread(new Runnable(){
+            threadPool.excute(new Runnable(){
                 public void run(){
                     try{
                         requestLimit.consume();
@@ -81,7 +95,6 @@ public class Task{
                     }
                 }
             });
-            thread.start();   
         }
     }
     
@@ -99,7 +112,7 @@ public class Task{
                         continue;
                     }
                 }
-                Thread thread = new Thread(new Runnable(){
+                threadPool.excute(new Runnable(){
                     public void run(){
                         try{
                             requestLimit.consume();
@@ -110,7 +123,6 @@ public class Task{
                         }
                     }
                 });
-                thread.start();   
             }
         }
     }
@@ -122,7 +134,7 @@ public class Task{
             final String met = method;
             Date date = new Date();
             final int y = date.getYear()+1900;
-            Thread thread = new Thread(new Runnable(){
+            threadPool.excute(new Runnable(){
                 public void run(){
                     try{
                         requestLimit.consume();
@@ -133,7 +145,6 @@ public class Task{
                     }
                 }
             });
-            thread.start();
         }
     }
 
@@ -158,7 +169,7 @@ public class Task{
     private void getLocationData(Area location, WorldArea country){
         final Area loc = location;
         final String cou = country.getName();
-        Thread thread = new Thread(new Runnable(){
+        threadPool.excute(new Runnable(){
             public void run(){
                 try{
                     requestLimit.consume();
@@ -168,6 +179,44 @@ public class Task{
                 }
             }
         });
-        thread.start();
+    }
+
+    private void getCountriesAreaData(){
+        for(WorldArea worldArea: WorldArea.values()){
+            for(Language language: Language.values()){
+                getAreaLanguageData(worldArea, language);
+            }
+        }
+    }
+
+    private void getChineseAreaData(){
+        for(ChineseArea chineseArea: ChineseArea.values()){
+            for(Language language: Language.values()){
+                getAreaLanguageData(chineseArea, language);
+            }
+        }
+    }
+
+    private void getAmericanAreaData(){
+        for(AmericanArea americanArea: AmericanArea.values()){
+            for(Language language: Language.values()){
+                getAreaLanguageData(americanArea, language);
+            }
+        }
+    }
+
+    private void getAreaLanguageData(Area location, Language language){
+        final Area loc = location;
+        final Language lan = language;
+        threadPool.excute(new Runnable(){
+            public void run(){
+                try{
+                    requestLimit.consume();
+                    areaLanguageService.updateUsers(lan.getValue(), loc.getName(), Search.LanguageAndLocationUserCount(lan, loc));
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
