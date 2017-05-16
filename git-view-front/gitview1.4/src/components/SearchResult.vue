@@ -14,7 +14,7 @@
     <div class="List">
       <div class="items">
         <ul v-for="item in searchdatare">
-          <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
+          <a v-html="item.name" v-bind:href="item.html_url" target="_blank"></a>
           <li>
             Description:&nbsp &nbsp{{item.des}}
           </li>
