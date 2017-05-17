@@ -1,4 +1,3 @@
 build/*.js
 config/*.js
 map/*.js
-map/*.json
