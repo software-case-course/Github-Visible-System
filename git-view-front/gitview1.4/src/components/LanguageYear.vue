@@ -98,7 +98,10 @@
           title: {
             text: this.languageid + '最近10年上传折线图',
             left: 'center',
-            top: 20
+            top: 20,
+            textStyle: {
+              color: '#ccc'
+            }
           },
           color: colors,
           tooltip: {
@@ -118,7 +121,10 @@
             }
           },
           legend: {
-            data: ['代码总量', '代码年上传量']
+            data: ['代码总量', '代码年上传量'],
+            textStyle: {
+              color: '#ccc'
+            }
           },
           xAxis: [
             {
@@ -126,7 +132,13 @@
               axisTick: {
                 alignWithLabel: true
               },
-              data: this.yeardata
+              data: this.yeardata,
+              axisLine: {
+                show: false,
+                lineStyle: {
+                color: '#ccc'
+                }
+              }
             }
           ],
           yAxis: [

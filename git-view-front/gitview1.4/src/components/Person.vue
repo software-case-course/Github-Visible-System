@@ -1,4 +1,4 @@
-np<template>
+<template>
   <div class="person_content">
     <transition name="slide">
       <div v-show="this.shownav" class="information-box">
@@ -9,7 +9,7 @@ np<template>
     <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
   </transition>
     <template>
-      <input class="repoinput" v-model="name">
+      <!--<input class="repoinput" v-model="name">
       <div id='person'>
         <button v-on:click="show();">show</button>
       </div>
@@ -18,7 +18,7 @@ np<template>
       </div>
       <div id='weekcommit'>
         <button v-on:click="showweekcommit();">show week commit</button>
-      </div>
+      </div>-->
       <chart id="linegraph"></chart>
       <chart id="commitgraph"></chart>
       <chart id="weekcommitgraph"></chart>
@@ -34,6 +34,9 @@ export default {
   name: 'Person',
   mounted () {
     this.$nextTick(function () {
+      this.getdata()
+      this.getcurddata()
+      this.getweeklycommitdata()
     })
   },
   computed: {
@@ -49,10 +52,10 @@ export default {
       commitdata: [],
       committotaldata: [],
       commitweek: [],
-      authorcommitauxiliary: [],
+      /* authorcommitauxiliary: [],
       authorname: [],
       authorcommitquantity: [],
-      maxcommit: ''
+      maxcommit: ''*/
     }
   },
   methods: {
@@ -60,7 +63,7 @@ export default {
     setshow () {
       this.changenav()
     },
-    show () {
+    /*show () {
       this.getdata()
     },
     showdaycommit () {
@@ -68,14 +71,14 @@ export default {
     },
     showweekcommit () {
       this.getweeklycommitdata()
-    },
+    },*/
     async getdata () {
       var adddata = []
       var deletedata = []
       var date = []
       var modifydata = []
       let temp
-      await this.$http.get('http://www.kongin.cn/git-view/repos/CodeFrequency?fullname=' + this.name).then(response => {
+      await this.$http.get('http://www.kongin.cn/git-view/repos/CodeFrequency?fullname=' + this.$route.query.keyword).then(response => {
         if (response.body.length > 10) {
           temp = 10
         } else {
@@ -101,7 +104,7 @@ export default {
     async getcurddata () {
       var commitarray = []
       this.maxcommit = 0
-      await this.$http.get('http://www.kongin.cn/git-view/repos/PunchCard?fullname=' + this.name).then(response => {
+      await this.$http.get('http://www.kongin.cn/git-view/repos/PunchCard?fullname=' + this.$route.query.keyword).then(response => {
         for (let i = 0; i < response.body.length; i++) {
           var com = response.body[i].commit
           if (com > this.maxcommit) {
@@ -118,7 +121,7 @@ export default {
     async getweeklycommitdata () {
       var committotalarray = []
       var committotalweek = []
-      await this.$http.get('http://www.kongin.cn/git-view/repos/CommitActivity?fullname=' + this.name).then(response => {
+      await this.$http.get('http://www.kongin.cn/git-view/repos/CommitActivity?fullname=' + this.$route.query.keyword).then(response => {
         for (let i = 0; i < response.body.length; i++) {
           if (response.body[i].total > 0) {
             for (let j = i; j < response.body.length; j++) {

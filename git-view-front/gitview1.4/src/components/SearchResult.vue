@@ -14,7 +14,7 @@
     <div class="List">
       <div class="items">
         <ul v-for="item in searchdatare">
-          <a v-html="item.name" v-bind:href="item.html_url" target="_blank"></a>
+          <a v-html="item.name" v-on:click="showwarehousedata();"></a>
           <li>
             Description:&nbsp &nbsp{{item.des}}
           </li>
@@ -70,33 +70,13 @@
             setshow() {
                 this.changenav()
             },
-      getdata() {
+      getdata () {
         this.searchdatare = config.searchdata
+        console.log(this.searchdatare[0].full_name)
       },
-      // async getsearchresult () {
-      // var data1 = []
-      // await this.$http.get('https://api.github.com/search/repositories?q=' + this.keyword + '&sort=forks').then(response => {
-      // this.searchdata = response.body.items
-      // console.log(this.$parent.$data)
-      // console.log(this.searchdatare)
-      // for (let i = 0; i < response.body.items.length; i++) {
-      //   let res = response.body.items[i]
-      //   var name = _.cloneDeep(res.name)
-      //   var des = _.cloneDeep(res.description)
-      //   var fork = _.cloneDeep(res.forks_count)
-      //   var watch = _.cloneDeep(res.watchers_count)
-      //   var star = _.cloneDeep(res.stargazers_count)
-      //   var url = _.cloneDeep(res.html_url)
-      //   var ownername = _.cloneDeep(res.owner.login)
-      //   var ownerurl = _.cloneDeep(res.owner.html_url)
-      //   var score = _.cloneDeep(res.score)
-      //   data1.push({name, des, watch, fork, star, url, ownername, ownerurl, score})
-      // }
-      // console.log(data1)
-      // this.searchdata = _.cloneDeep(data1)
-      // console.log(this.searchdata)
-      // })
-      // },
+      showwarehousedata (){
+        this.$router.push({ path: '/person', query: { keyword: this.searchdatare[0].full_name } })
+      },
       search_onclick() {
         // console.log(this.search_input)
         this.$router.push({ path: '/search', query: { keyword: this.search_input } })
