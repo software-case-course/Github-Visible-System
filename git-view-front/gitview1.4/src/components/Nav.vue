@@ -62,11 +62,10 @@ export default {
 <style scoped>
 .nav_content{
   width: 100%;
-  overflow: auto;
+  height: 100%;
 }
 nav{
   width: 100%;
-  min-width: 800px;
   height: 60px;
   background-color: #CC0033;
   position: fixed;
@@ -137,14 +136,5 @@ nav>p:active{
   border: none;
   cursor: pointer;
 }
-/*.user-head-picture-box{
-  width: 200px;
-  height: 200px;
-  background-color: #000;
-  position: absolute;
-  bottom: 30%;
-  left: 15%;
-  border: 5px solid #fff;
-}*/
 </style>
 

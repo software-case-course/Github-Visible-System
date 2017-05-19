@@ -1,14 +1,25 @@
 html {
     font-size: 62.5%;
+    height: 100%;
+    width: 100%;
 }
 
 body {
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 29px00;
     font: 12px"\5B8B\4F53", sans-serif;
     background: #CCCCCC;
     user-select: none;
     font-family: "微软雅黑";
+}
+
+#app{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p {

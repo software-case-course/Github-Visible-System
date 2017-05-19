@@ -98,7 +98,7 @@
           title: {
             text: this.languageid + '最近10年上传折线图',
             left: 'center',
-            top: 20,
+            top: 0,
             textStyle: {
               color: '#ccc'
             }
@@ -228,12 +228,12 @@
   width: 100%;
   background-color: #333366;
   min-width: 800px;
+  padding-top: 100px;
 }
 .linegraph{
   width:800px;
   height:600px;
   margin: 0 auto;
-  margin-top: 100px;
 }
 .List{
   width: 90%;

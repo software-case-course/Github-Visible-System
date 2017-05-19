@@ -14,10 +14,6 @@ export default {
 
 <style>
 #app{
-  width: 100%;
-  min-height: 600px;
-  /*min-width:1366px;*/
-  margin: 0px;
   background-color: #333366;
 }
 
