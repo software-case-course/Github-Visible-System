@@ -63,6 +63,7 @@ export default {
 .nav_content{
   width: 100%;
   height: 100%;
+  min-width: 400px;
 }
 nav{
   width: 100%;
@@ -135,6 +136,14 @@ nav>p:active{
   outline: none;
   border: none;
   cursor: pointer;
+}
+@media screen and (max-width: 500px){
+  .search-box{
+    width: 100px;
+  }
+  nav>a{
+    width: 60px;
+  }
 }
 </style>
 

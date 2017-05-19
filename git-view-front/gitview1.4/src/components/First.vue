@@ -112,6 +112,10 @@
               trigger: 'item',
               formatter: '{a} <br/>{b} : {c} ({d}%)'
             },
+            toolbox: {
+              show: true,
+              orient: ''
+            },
             visualMap: {
               show: false,
               min: 400,
@@ -188,7 +192,6 @@
             },
             toolbox: {
               show: true,
-              orient: 'horizontal',
               right: '50',
               feature: {
                 dataView: { show: true, readOnly: false },
@@ -265,19 +268,34 @@
               }
             ]
           },
-          media: [{
-            query: {
-              maxWidth: 501
-            },
-            option: {
-              legend:{
-                orient: 'vertical'
+          media: [
+            {
+              query: {
+                maxWidth: 501
               },
-              toolbox: {
-                orient: 'vertical'
+              option: {
+                toolbox: {
+                  orient: 'vertical'
+                },
+                legend: {
+                  orient: 'vertical'
+                }
+              }
+            },
+            {
+              query: {
+                minWidth: 501
+              },
+              option: {
+                toolbox: {
+                  orient: 'horizontal'
+                },
+                legend: {
+                  orient: 'horizontal'
+                }
               }
             }
-          }]
+          ]
         }
         window.onresize = function () {
           barChart.resize()
@@ -293,10 +311,6 @@
           console.log(param.name)
           self.$router.push({ path: '/language', query: { name: param.name } })
         })
-      },
-      async drawbargraph(id) {
-        var self = this
-        var barChart = echarts.init(document.getElementById(id))
       }
     }
   }
@@ -362,6 +376,11 @@
   .barEcha{
     width: 400px;
     height: 400px;
+  }
+}
+@media screen and (max-width:800px){
+  .chart-container{
+    flex-direction: column;
   }
 }
 @media screen and (max-height:700px){
