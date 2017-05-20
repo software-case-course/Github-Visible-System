@@ -66,20 +66,21 @@ export default {
   min-width: 400px;
 }
 nav{
-  width: 100%;
-  height: 60px;
-  background-color: #CC0033;
   position: fixed;
   top: 0;
   z-index: 4;
-  box-shadow: 0 0 20px #000;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: #222222;
+  border-bottom: 1px solid #ccc;
 }
 nav>p{
   display: inline-block;
   height: 60px;
   line-height: 60px;
   float: right;
-  color: #fff;
+  color: #155fea;
   font-size: 1.6rem;
   padding: 0 20px;
 }
@@ -88,7 +89,7 @@ nav>a{
   width: 100px;
   height: 60px;
   line-height: 60px;
-  color: #fff;
+  color: #155fea;
   font-size: 1.6rem;
   text-decoration: none;
   text-align: center;

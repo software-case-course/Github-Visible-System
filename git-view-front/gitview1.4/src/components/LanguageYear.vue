@@ -10,26 +10,29 @@
     </transition>
     <chart id="linegraph" class="linegraph"></chart>
     <div class="List">
-      <ul v-for="item in languagetop30data">
-        <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
-        <li>
-          Description:&nbsp &nbsp{{item.des}}
-        </li>
-        <li>
-          Fork Count:&nbsp &nbsp{{item.fork}}
-        </li>
-        <li>
-          Watchers Count:&nbsp &nbsp{{item.watch}}
-        </li>
-        <li>
-          Star Count:&nbsp &nbsp{{item.star}}
-        </li>
-        <li>Score:&nbsp &nbsp{{item.score}}</li>
-        <li>
-          <a>The Owner:&nbsp</a>
-          <a v-html="item.ownername" v-bind:href="item.ownerurl" target="_blank"></a>
-        </li>
-      </ul>
+        <ul v-for="item in languagetop30data">
+          <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
+          <li>
+            <p>Description :</p>&nbsp &nbsp{{item.des}}
+          </li>
+          <li>
+            <p>Fork Count :</p>&nbsp &nbsp{{item.fork}}
+          </li>
+          <li>
+            <p>Watchers Count :</p>&nbsp &nbsp{{item.watch}}
+          </li>
+          <li>
+            <p>Star Count :</p>&nbsp &nbsp{{item.star}}
+          </li>
+          <li>
+            <p>Score :</p>&nbsp &nbsp{{item.score}}
+          </li>
+          <li>
+            <a>
+              <p>The Owner :</p>&nbsp</a>
+            <a v-html="item.ownername" v-bind:href="item.ownerurl" target="_blank"></a>
+          </li>
+        </ul>
     </div>
   </div>
 </template>
@@ -92,101 +95,132 @@
         this.drawline('linegraph')
       },
       async drawline(id) {
-        var colors = ['#5793f3', '#d14a61', '#ccc']
-        this.chart = echarts.init(document.getElementById(id))
-        this.chart.setOption({
-          title: {
-            text: this.languageid + '最近10年上传折线图',
-            left: 'center',
-            top: 0,
-            textStyle: {
-              color: '#ccc'
-            }
-          },
-          color: colors,
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'cross'
-            }
-          },
-          grid: {
-            right: '20%'
-          },
-          toolbox: {
-            feature: {
-              dataView: { show: true, readOnly: false },
-              restore: { show: true },
-              saveAsImage: { show: true }
-            }
-          },
-          legend: {
-            data: ['代码总量', '代码年上传量'],
-            textStyle: {
-              color: '#ccc'
-            }
-          },
-          xAxis: [
-            {
-              type: 'category',
-              axisTick: {
-                alignWithLabel: true
-              },
-              data: this.yeardata,
-              axisLine: {
-                show: false,
-                lineStyle: {
-                color: '#ccc'
-                }
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              name: '代码总量',
-              min: 0,
-              max: Math.max.apply(null, this.repodata) + Math.max.apply(null, this.repodata) / 10,
-              position: 'right',
-              axisLine: {
-                lineStyle: {
-                  color: colors[0]
-                }
-              },
-              axisLabel: {
-                formatter: '{value}'
+        var lineColor = '#222222'
+        var colors = ['#006699', '#003366', lineColor]
+        var myChart = echarts.init(document.getElementById(id))
+        var myOption = {
+          baseOption: {
+            title: {
+              text: this.languageid + '最近10年上传折线图',
+              left: 'center',
+              top: 0,
+              textStyle: {
+                color: lineColor
               }
             },
-            {
-              type: 'value',
-              name: '年上传量',
-              min: 0,
-              max: Math.max.apply(null, this.pushdata) + Math.max.apply(null, this.pushdata) / 10,
-              position: 'left',
-              axisLine: {
-                lineStyle: {
-                  color: colors[2]
+            color: colors,
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                type: 'cross'
+              }
+            },
+            grid: {
+              right: '16%',
+              left: '16%'
+            },
+            toolbox: {
+              feature: {
+                dataView: { show: true, readOnly: false },
+                restore: { show: true },
+                saveAsImage: { show: true }
+              }
+            },
+            legend: {
+              bottom: 0,
+              orient: 'horizontal',
+              data: ['代码总量', '代码年上传量'],
+              textStyle: {
+                color: lineColor
+              }
+            },
+            xAxis: [
+              {
+                type: 'category',
+                axisTick: {
+                  alignWithLabel: true
+                },
+                data: this.yeardata,
+                axisLine: {
+                  show: false,
+                  lineStyle: {
+                    color: lineColor
+                  }
+                },
+                axisLabel: {
+                  textStyle: {
+                    fontSize: 12
+                  }
+                }
+              }
+            ],
+            yAxis: [
+              {
+                type: 'value',
+                name: '代码总量',
+                min: 0,
+                max: Math.max.apply(null, this.repodata) + Math.max.apply(null, this.repodata) / 10,
+                position: 'right',
+                axisLine: {
+                  lineStyle: {
+                    color: colors[0]
+                  }
+                },
+                axisLabel: {
+                  formatter: '{value}',
+                  textStyle: {
+                    fontSize: 12
+                  }
                 }
               },
-              axisLabel: {
-                formatter: '{value}'
+              {
+                type: 'value',
+                name: '年上传量',
+                min: 0,
+                max: Math.max.apply(null, this.pushdata) + Math.max.apply(null, this.pushdata) / 10,
+                position: 'left',
+                axisLine: {
+                  lineStyle: {
+                    color: colors[2]
+                  }
+                },
+                axisLabel: {
+                  formatter: '{value}',
+                  textStyle: {
+                    fontSize: 12
+                  }
+                }
               }
-            }
-          ],
-          series: [
+            ],
+            series: [
+              {
+                name: '代码总量',
+                type: 'bar',
+                data: this.repodata
+              },
+              {
+                name: '代码年上传量',
+                type: 'line',
+                yAxisIndex: 1,
+                data: this.pushdata
+              }
+            ]
+          },
+          media: [
             {
-              name: '代码总量',
-              type: 'bar',
-              data: this.repodata
-            },
-            {
-              name: '代码年上传量',
-              type: 'line',
-              yAxisIndex: 1,
-              data: this.pushdata
+              query: {
+                maxWidth: 600
+              },
+              option: {
+                toolbox: {
+                  show: false
+                }
+              }
             }
           ]
-        })
+        }
+        window.onresize = myChart.resize
+        myChart.setOption(myOption)
       },
       async languagetop30() {
         var data1 = []
@@ -226,73 +260,93 @@
 <style scoped>
 .languageyear_content{
   width: 100%;
-  background-color: #333366;
-  min-width: 800px;
+  background-color: #ccc;
   padding-top: 100px;
+  padding-bottom: 40px;
 }
 .linegraph{
-  width:800px;
-  height:600px;
+  width: 700px;
+  height: 500px;
   margin: 0 auto;
 }
 .List{
-  width: 90%;
-  margin: 0 auto;
+  width: 1200px;
+  margin-top: 40px;
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+  justify-content: center
 }
 .List ul{
   display: inline-block;
   box-sizing: border-box;
-  max-width: 600px;
+  width: 500px;
   padding: 20px;
-  margin: 10px;
-  background-color: #CC0033;
+  margin: 20px;
+  border-radius: 5px;
+  border-left: 20px solid #fff;
+  background-color: #155fea;
   box-shadow: 5px 5px 20px #000;
 }
 .List a {
   font-size: 40px;
   font-family: sans-serif;
-  color: #CCC;
+  color: #fff;
   text-decoration: none;
+}
+.List p {
+  display: inline-block;
+  color: #fff;
 }
 .List li, .List li>a{
   font-size: 1.2em;
+  padding: 5px 0;
 }
 
-nav{
-  width: 100%;
-  height: 60px;
-  background-color: #CC0033;
-  text-align: center;
+@media screen and (max-width:1200px){
+  .linegraph{
+    width: 600px;
+    height: 500px;
+  }
+  .List{
+    width: 1000px;
+  }
+  .List ul{
+    width: 400px;
+  }
 }
-nav>p{
-  display: inline-block;
-  height: 60px;
-  line-height: 60px;
-  float: left;
-  color: #fff;
-  font-size: 1.6rem;
-  padding:0 20px;
+@media screen and (max-width:1000px){
+  .List{
+    width: 800px;
+  }
+  .List ul{
+    width: 350px;
+  }
 }
-nav>a{
-  display: inline-block;
-  width: 100px;
-  height: 60px;
-  line-height: 60px;
-  color: #fff;
-  font-size: 1.6rem;
-  text-decoration: none;
-  float:right;
+@media screen and (max-width:800px){
+  .linegraph{
+    width: 600px;
+    height: 400px;
+  }
+  .List{
+    width: 500px;
+  }
+  .List ul{
+    width: 500px;
+  }
 }
-nav>a:hover{
-  background-color: #dd6d6d;
-}
-nav>a:active{
-  background-color: #840000;
-}
-nav>a>img{
-  margin: 12px 0;
+@media screen and (max-width:500px){
+  .linegraph{
+    width: 400px;
+    height: 400px;
+  }
+  .List{
+    width: 400px;
+  }
+  .List ul{
+    width: 350px;
+  }
 }
 </style>

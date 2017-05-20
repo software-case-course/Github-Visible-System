@@ -94,18 +94,20 @@
         })
       },
       async drawGraph() {
+        var mainColor = '#ccc'
+        var textColor = "#222222"
         var self = this
         var pieChart = echarts.init(document.getElementById('Echa'))
         var barChart = echarts.init(document.getElementById('barEcha'))
         let pieOption = {
           baseOption: {
-            backgroundColor: '#333366',
+            backgroundColor: mainColor,
             title: {
               text: 'Github 占比最大前十语言',
               left: 'center',
               top: 0,
               textStyle: {
-                color: '#ccc'
+                color: textColor
               }
             },
             tooltip: {
@@ -120,14 +122,14 @@
               show: false,
               min: 400,
               max: 400,
-              color: '#000',
+              color: textColor,
               inRange: {
                 colorAlpha: 1,
               }
             },
             series: [
               {
-                color: ['#c23531', '#4083b0', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#f46666', '#ffa1a1', '#ff6464', '#CC3333', '#990033'],
+                color: ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6699CC', '#155fea', '#c4ccd3'],
                 name: '语言及仓库数量：',
                 type: 'pie',
                 radius: '75%',
@@ -137,14 +139,14 @@
                 label: {
                   normal: {
                     textStyle: {
-                      color: 'rgba(255, 255, 255, 0.3)'
+                      color: textColor
                     }
                   }
                 },
                 labelLine: {
                   normal: {
                     lineStyle: {
-                      color: 'rgba(255, 255, 255, 0.5)'
+                      color: textColor
                     },
                     smooth: 0.2,
                     length: 10,
@@ -168,12 +170,12 @@
         }
         let barOption = {
           baseOption: {
-            backgroundColor: '#333366',
+            backgroundColor: mainColor,
             title: {
               left: 20,
               text: '仓库及用户数量',
               textStyle: {
-                color: '#ccc'
+                color: textColor
               }
             },
             tooltip: {
@@ -182,7 +184,7 @@
             legend: {
               orient: 'horizontal',
               textStyle: {
-                color: '#ccc'
+                color: textColor
               },
               data: ['仓库数量', '用户数量']
             },
@@ -208,14 +210,14 @@
                 axisLine: {
                   show: true,
                   lineStyle: {
-                    color: '#ccc'
+                    color: textColor
                   }
                 },
                 axisLabel: {
                   interval: 0,
                   rotate: 30,
                   textStyle: {
-                    color: '#ccc'
+                    color: textColor
                   }
                 }
               }
@@ -226,12 +228,12 @@
                 axisLine: {
                   show: true,
                   lineStyle: {
-                    color: '#ccc'
+                    color: textColor
                   }
                 },
                 axisLabel: {
                   textStyle: {
-                    color: '#ccc'
+                    color: textColor
                   }
                 }
               }
@@ -246,14 +248,19 @@
                     { type: 'average', name: '平均值' }
                   ]
                 },
-                barGap: '-100%'
+                barGap: '-100%',
+                itemStyle: {
+                  normal: {
+                    color: '#003366'
+                  }
+                }
               },
               {
                 name: '用户数量',
                 type: 'bar',
                 itemStyle: {
                   normal: {
-                    color: '#00fe00'
+                    color: '#006699'
                   }
                 },
                 data: this.bardatausers,
@@ -320,7 +327,7 @@
 <style scoped>
 .main_content{
     width: 100%;
-    background-color: #333366;
+    background-color: #ccc;
     overflow: hidden;
     padding-top: 60px;
     padding-bottom: 60px;
