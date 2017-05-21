@@ -12,7 +12,6 @@
       <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
     </transition>
     <div class="List">
-      <div class="items">
         <ul v-for="item in searchdatare">
           <a v-html="item.name" v-on:click="showwarehousedata();"></a>
           <li>
@@ -35,7 +34,6 @@
             <a v-html="item.owner.login" v-bind:href="item.owner.html_url" target="_blank"></a>
           </li>
         </ul>
-      </div>
     </div>
   </div>
 </template>
@@ -88,127 +86,82 @@
 <style scoped>
 .searchresult_content{
   width: 100%;
-  background-color: #333366;
-  min-width: 800px;
+  background-color: #ccc;
   padding-top: 100px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 .List{
-  width: 90%;
-  margin: 0 auto;
-}
-.items{
+  width: 1200px;
+  margin-top: 40px;
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center
 }
 .List ul{
   display: inline-block;
   box-sizing: border-box;
-  max-width: 600px;
+  width: 500px;
   padding: 20px;
-  margin: 10px;
-  background-color: #CC0033;
+  margin: 20px;
+  border-radius: 5px;
+  border-left: 20px solid #fff;
+  background-color: #155fea;
   box-shadow: 5px 5px 20px #000;
 }
+
 .List ul:hover{
-  background-color: #dd6d6d;
+  background-color: #003366;
 }
+
 .List a {
   font-size: 40px;
   font-family: sans-serif;
-  color: #CCC;
+  color: #fff;
   text-decoration: none;
+  cursor: pointer;
 }
-.List li,.List li>a{
+.List p {
+  display: inline-block;
+  color: #fff;
+}
+.List li, .List li>a{
   font-size: 1.2em;
-  overflow: hidden;
-}
-.List li{
-  margin: 5px 0;
-  user-select: text;
-}
-nav{
-  width: 100%;
-  min-width: 800px;
-  height: 60px;
-  background-color: #CC0033;
-  position: fixed;
-  top: 0;
-  z-index: 4;
-}
-nav>p{
-  display: inline-block;
-  height: 60px;
-  line-height: 60px;
-  float: right;
-  color: #fff;
-  font-size: 1.6rem;
-  padding: 0 20px;
-  cursor: pointer;
-}
-nav>a{
-  display: inline-block;
-  width: 100px;
-  height: 60px;
-  line-height: 60px;
-  color: #fff;
-  font-size: 1.6rem;
-  text-decoration: none;
-  text-align: center;
-  float:left;
-}
-nav>a:hover{
-  background-color: #dd6d6d;
-}
-nav>a:active{
-  background-color: #840000;
-}
-nav>p:hover{
-  background-color: #dd6d6d;
-}
-nav>p:active{
-  background-color: #840000;
-}
-/*nav>img{
-  margin-top: 24px;
-  cursor: pointer;
-}*/
-.background-shelter{
-  width: 100%;
-  height: 100%;
-  background-color: #000;
-  opacity: 0.6;
-  position: fixed;
-  top: 0;
-  z-index: 2;
-}
-.information-box{
-  width: 100%;
-  height: 62%;
-  background-color: #CC0033;
-  position: fixed;
-  top: 0;
-  z-index: 3;
+  padding: 5px 0;
 }
 
-.search-box{
-  width: 200px;
-  height: 30px;
-  margin: 15px 0;
-  border-radius: 3px;
-  border: none;
-  padding: 5px;
-  outline: none;
-  font-size: 16px;
-  float: right;
+@media screen and (max-width:1200px){
+  .List{
+    width: 1000px;
+  }
+  .List ul{
+    width: 400px;
+  }
 }
-.search-icon{
-  height: 40px;
-  margin: 10px 0;
-  background: transparent;
-  float: right;
-  outline: none;
-  border: none;
-  cursor: pointer;
+@media screen and (max-width:1000px){
+  .List{
+    width: 800px;
+  }
+  .List ul{
+    width: 350px;
+  }
+}
+@media screen and (max-width:800px){
+  .List{
+    width: 500px;
+  }
+  .List ul{
+    width: 500px;
+  }
+}
+@media screen and (max-width:500px){
+  .List{
+    width: 400px;
+  }
+  .List ul{
+    width: 350px;
+  }
 }
 </style>

@@ -96,7 +96,7 @@ nav>a{
   float:left;
   cursor: pointer;
 }
-nav>a:hover{
+/*nav>a:hover{
   background-color: #dd6d6d;
 }
 nav>a:active{
@@ -107,7 +107,7 @@ nav>p:hover{
 }
 nav>p:active{
   background-color: #840000;
-}
+}*/
 /*nav>img{
   margin-top: 24px;
   cursor: pointer;

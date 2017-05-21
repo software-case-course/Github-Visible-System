@@ -2,7 +2,10 @@
   <div class="main_content">
     <transition name="slide">
       <div v-show="this.shownav" class="information-box">
-        <div class="selector-container" v-show="this.shownav">
+        <div class="selector-container">
+          <a v-on:click="worlddis" class="selector-box">全球分布</a>
+          <a v-on:click="worlddis" class="selector-box">全球分布</a>
+          <a v-on:click="worlddis" class="selector-box">全球分布</a>
           <a v-on:click="worlddis" class="selector-box">全球分布</a>
         </div>
         <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow" />
@@ -352,20 +355,26 @@
   }
 .selector-container{
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin: 50px;
+  justify-content: space-around;
+  box-sizing: border-box;
+  width: 100%;
+  height: 184px;
+  padding: 20px;
 }
 .selector-box{
   display: inline-block;
-  line-height: 60px;
-  width: 150px;
-  height: 60px;
-  font-size: 1.4rem;
+  line-height: 134px;
+  width: 20%;
+  height: 134px;
+  font-size: 2rem;
   color: #fff;
   text-align: center;
   cursor: pointer;
-  background-color: #333333;
+  background-color: #222222;
+  border-top: 10px solid transparent;
+}
+.selector-box:hover{
+  border-top: 10px solid #155fea;
 }
 @media screen and (max-width: 1200px){
   .Echa{
