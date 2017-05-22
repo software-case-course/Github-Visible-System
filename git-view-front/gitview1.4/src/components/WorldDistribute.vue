@@ -116,7 +116,7 @@
                         text: ['High', 'Low'],
                         realtime: false,
                         calculable: true,
-                        color: ['#368f45', '#68da7b', '#9dffad'],
+                        color: ['#003366', '#006699', '#99CCFF'],
                         textStyle: {
                             color: '#ccc'
                         }
@@ -502,7 +502,7 @@
 <style scoped>
     .world_content{
         overflow: hidden;
-        background-color: #333366
+        background-color: #ccc;
     }
     .allmapchart {
         top: 80px;

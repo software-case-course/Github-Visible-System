@@ -19,9 +19,9 @@
       <div id='weekcommit'>
         <button v-on:click="showweekcommit();">show week commit</button>
       </div>-->
-      <chart id="linegraph"></chart>
-      <chart id="commitgraph"></chart>
-      <chart id="weekcommitgraph"></chart>
+      <chart id="linegraph" class="charts"></chart>
+      <chart id="commitgraph" class="charts"></chart>
+      <chart id="weekcommitgraph" class="charts"></chart>
     </template>
   </div>
 </template>
@@ -243,7 +243,8 @@ export default {
     },*/
     async drawweeklycommit (id) {
       this.chart = echarts.init(document.getElementById(id))
-      this.chart.setOption({
+      var lineColor = '#155fea'
+      var lineChartOption = {
         tooltip: {
           trigger: 'axis'
         },
@@ -268,7 +269,7 @@ export default {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#ccc'
+              color: lineColor
             }
           }
         },
@@ -277,7 +278,12 @@ export default {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#ccc'
+              color: lineColor
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: lineColor
             }
           }
         },
@@ -289,7 +295,8 @@ export default {
             data: this.committotaldata
           }
         ]
-      })
+      }
+      this.chart.setOption(lineChartOption)
     },
     async drawpunchcard (id) {
       var hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a',
@@ -304,12 +311,13 @@ export default {
         return [item[1], item[0], item[2]]
       })
       this.chart = echarts.init(document.getElementById(id))
-      this.chart.setOption({
+      var lineColor = '#155fea'
+      var pointChartOption = {
         legend: {
           data: ['Punch Card'],
-          left: 'right',
+          left: 'center',
           textStyle: {
-            color: '#ccc'
+            color: lineColor
           }
         },
         tooltip: {
@@ -331,14 +339,14 @@ export default {
           splitLine: {
             show: true,
             lineStyle: {
-              color: '#F8F8FF',
+              color: lineColor,
               type: 'dashed'
             }
           },
           axisLine: {
             show: false,
             lineStyle: {
-              color: '#ccc'
+              color: lineColor
             }
           },
           axisLable: {
@@ -351,7 +359,7 @@ export default {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#ccc'
+              color: lineColor
             }
           },
           axisLable: {
@@ -364,6 +372,11 @@ export default {
         series: [{
           name: 'Punch Card',
           type: 'scatter',
+          itemStyle: {
+            normal: {
+              color: '#003366'
+            }
+          },
           symbolSize: function (val) {
             console.log(val[2])
             return (Math.log(Math.pow(val[2], 1.5)) / Math.log(Math.pow(maxdata, 1 / 6)) + 2) * 4
@@ -373,11 +386,13 @@ export default {
             return idx * 5
           }
         }]
-      })
+      }
+      this.chart.setOption(pointChartOption)
     },
     async drawchart (id) {
       this.chart = echarts.init(document.getElementById(id))
-      this.chart.setOption({
+      var lineColor = '#155fea'
+      var barChartOption = {
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -387,7 +402,7 @@ export default {
         legend: {
           data: ['代码变化量', '减少代码量', '增加代码量'],
           textStyle: {
-            color: '#ccc'
+            color: lineColor
           }
         },
         grid: {
@@ -402,7 +417,12 @@ export default {
             axisLine: {
               show: true,
               lineStyle: {
-                color: '#ccc'
+                color: lineColor
+              }
+            },
+            splitLine: {
+              lineStyle: {
+                color: lineColor
               }
             }
           }
@@ -415,7 +435,7 @@ export default {
             axisLine: {
               show: false,
               lineStyle: {
-                color: '#ccc'
+                color: lineColor
               }
             },
           }
@@ -456,7 +476,8 @@ export default {
             data: this.deletion
           }
         ]
-      })
+      }
+      this.chart.setOption(barChartOption)
     }
   }
 }
@@ -464,24 +485,14 @@ export default {
 
 <style scoped>
 .person_content {
-  height: 600px;
-  width: 100%
+  width: 100%;
+  background-color: #ccc;
+  padding-top: 60px;
 }
-.repoinput{
-  margin-top:6%
-}
-#linegraph {
-  height: 600px;
-  width: 80%
-}
-
-#commitgraph {
+.charts{
   height: 600px;
   width: 80%;
-}
-
-#weekcommitgraph {
-  height: 80%;
-  width: 80%
+  margin: 0 auto;
+  margin-top: 40px;
 }
 </style>
