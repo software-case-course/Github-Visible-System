@@ -92,7 +92,6 @@
           // console.log(this.pushdata)
           // console.log(this.yeardata)
         })
-        this.drawline('linegraph')
       },
       async drawline(id) {
         var lineColor = '#222222'
@@ -228,18 +227,19 @@
           // console.log(response)
           for (let i = 0; i < response.body.items.length; i++) {
             let res = response.body.items[i]
-            var name = _.cloneDeep(res.name)
-            var des = _.cloneDeep(res.description)
-            var fork = _.cloneDeep(res.forks_count)
-            var watch = _.cloneDeep(res.watchers_count)
-            var star = _.cloneDeep(res.stargazers_count)
-            var url = _.cloneDeep(res.html_url)
-            var ownername = _.cloneDeep(res.owner.login)
-            var ownerurl = _.cloneDeep(res.owner.html_url)
-            var score = _.cloneDeep(res.score)
+            var name = res.name
+            var des = res.description
+            var fork = res.forks_count
+            var watch = res.watchers_count
+            var star = res.stargazers_count
+            var url = res.html_url
+            var ownername = res.owner.login
+            var ownerurl = res.owner.html_url
+            var score = res.score
             data1.push({ name, des, watch, fork, star, url, ownername, ownerurl, score })
           }
           this.languagetop30data = _.cloneDeep(data1)
+          this.drawline('linegraph')
         })
       }
     },

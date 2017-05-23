@@ -2,9 +2,19 @@
     <div class="world_content">
         <transition name="slide">
             <div v-show="this.shownav" class="information-box">
-                <!--<form>
-      </form>-->
-                <!--<div class="user-head-picture-box"></div>-->
+                <form>
+                    <label><input type="radio" checked ="checked" name="name" value="All" v-on:click="getchoose">All</input></label>
+                    <label><input type="radio" name="name" value="Javascript" v-on:click="getchoose">Javascript</input></label>
+                    <label><input type="radio" name="name" value="Java" v-on:click="getchoose">Java</input></label>
+                    <label><input type="radio" name="name" value="Python" v-on:click="getchoose">Pyhton</input></label>
+                    <label><input type="radio" name="name" value="Ruby" v-on:click="getchoose">Ruby</input></label>
+                    <label><input type="radio" name="name" value="PHP" v-on:click="getchoose">PHP</input></label>
+                    <label><input type="radio" name="name" value="CSS" v-on:click="getchoose">CSS</input></label>
+                    <label><input type="radio" name="name" value="C++" v-on:click="getchoose">C++</input></label>
+                    <label><input type="radio" name="name" value="C" v-on:click="getchoose">C</input></label>
+                    <label><input type="radio" name="name" value="Shell" v-on:click="getchoose">Shell</input></label>
+                    <label><input type="radio" name="name" value="Objective-C" v-on:click="getchoose">Objective-C</input></label>
+                </form>
                 <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow" />
             </div>
         </transition>
@@ -16,18 +26,6 @@
         </div>
         <div class="backbutton">
             <img src="../assets/images/ic_arrow_back_white_36dp_1x.png" @click="toworld">
-        </div>
-        <div>
-            <chart id="jsmapchart" class="jsmapchart"></chart>
-            <chart id="javamapchart" class="javamapchart"></chart>
-            <chart id="pythonmapchart" class="pythonmapchart"></chart>
-            <chart id="rubymapchart" class="rubymapchart"></chart>
-            <chart id="phpmapchart" class="phpmapchart"></chart>
-            <chart id="cssmapchart" class="cssmapchart"></chart>
-            <chart id="cplusmapchart" class="cplusmapchart"></chart>
-            <chart id="cmapchart" class="cmapchart"></chart>
-            <chart id="shellmapchart" class="shellmapchart"></chart>
-            <chart id="ocmapchart" class="ocmapchart"></chart>
         </div>
     </div>
 </template>
@@ -55,9 +53,7 @@
         },
         data() {
             return {
-                worlddata: [],
-                usadata: [],
-                chinadata: [],
+                alldata: [],
                 jsdata: [],
                 javadata: [],
                 pythondata: [],
@@ -74,12 +70,12 @@
                 option: {
                     width: '250%',
                     title: {
-                        text: 'github 用户全球分布图',
+                        text: 'github  用户全球分布图',
                         subtext: '',
                         x: 'center',
                         y: 'top',
                         textStyle: {
-                            color: '#ccc'
+                            color: '#000'
                         }
                     },
                     tooltip: {
@@ -113,17 +109,18 @@
                     dataRange: {
                         min: 0,
                         max: 200000,
+                        top: '50%',
                         text: ['High', 'Low'],
                         realtime: false,
                         calculable: true,
                         color: ['#003366', '#006699', '#99CCFF'],
                         textStyle: {
-                            color: '#ccc'
+                            color: '#000'
                         }
                     },
                     series: [{
                         width: '100%',
-                        height: '80%',
+                        height: '72%',
                         left: 'cenetr',
                         top: 'center',
                         name: 'github用户分布图',
@@ -152,8 +149,6 @@
             },
             async getdisdata() {
                 var data1 = []
-                var data2 = []
-                var data3 = []
                 var landata = []
                 await this.$http.get('http://www.kongin.cn/git-view/search/country').then(response => { // 获取全球数据
                     // console.log(response)
@@ -173,7 +168,7 @@
                         let res = response.body[i]
                         var name = this.allfilter(res.location)
                         var value = res.users
-                        data2.push({
+                        data1.push({
                             name,
                             value
                         })
@@ -185,15 +180,13 @@
                         var name = this.allfilter(res.location)
                         var value = res.users
                         // console.log(name)
-                        data3.push({
+                        data1.push({
                             name,
                             value
                         })
                     }
                 })
-                this.worlddata = _.cloneDeep(data1)
-                this.usadata = _.cloneDeep(data2)
-                this.chinadata = _.cloneDeep(data3)
+                this.alldata = _.cloneDeep(data1)
                 landata = await this.getlanguagedata('Javascript')
                 this.jsdata = _.cloneDeep(landata)
                 landata = await this.getlanguagedata('Java')
@@ -214,20 +207,7 @@
                 this.shelldata = _.cloneDeep(landata)
                 landata = await this.getlanguagedata('Objective-C')
                 this.objectcdata = _.cloneDeep(landata)
-                // console.log(this.chinadata)
-                // console.log(this.usadata)
-                // console.log(this.worlddata)
                 this.drawMap('allmapchart')
-                this.drawlanguageMap('jsmapchart', 'Javascript', this.jsdata)
-                this.drawlanguageMap('javamapchart', 'Java', this.javadata)
-                this.drawlanguageMap('pythonmapchart', 'Python', this.pythondata)
-                this.drawlanguageMap('rubymapchart', 'Ruby', this.rubydata)
-                this.drawlanguageMap('phpmapchart', 'PHP', this.phpdata)
-                this.drawlanguageMap('cssmapchart', 'CSS', this.cssdata)
-                this.drawlanguageMap('cplusmapchart', 'C++', this.cplusdata)
-                this.drawlanguageMap('cmapchart', 'C', this.cdata)
-                this.drawlanguageMap('shellmapchart', 'Shell',this.shelldata)
-                this.drawlanguageMap('ocmapchart', 'Objective-C', this.objectcdata)
             },
             async getlanguagedata (language) {
                 var data = []
@@ -246,38 +226,28 @@
             drawMap(id) {
                 this.chart = echarts.init(document.getElementById(id))
                 this.option.series[0].data = []
-                for (let i = 0; i < this.worlddata.length; i++) {
-                    var item = this.worlddata[i]
+                for (let i = 0; i < this.alldata.length; i++) {
+                    var item = this.alldata[i]
                     this.option.series[0].data.push({
                         name: item.name,
                         value: item.value
                     })
                 }
-                this.option.dataRange.max = this.getdatamax(this.worlddata)
+                this.option.dataRange.max = this.getdatamax(this.alldata)
                 this.chart.setOption(this.option)
                 this.chart.on('click', this.chartclick)
             },
             toworld() {
                 this.chart.setOption(this.option, false)
                 this.option.title.text = 'github用户全球分布图'
-                this.option.dataRange.max = this.getdatamax(this.worlddata)
+                this.option.dataRange.max = this.getdatamax(this.alldata)
                 Object.assign(this.option.series[0], {
                     mapType: 'world',
                     width: '100%',
                     height: '80%'
                 })
                 console.log('toworld')
-                this.drawlanguageMap('allmapchart', '', this.worlddata)
-                this.drawlanguageMap('jsmapchart', 'Javascript', this.jsdata)
-                this.drawlanguageMap('javamapchart', 'Java', this.javadata)
-                this.drawlanguageMap('pythonmapchart', 'Python', this.pythondata)
-                this.drawlanguageMap('rubymapchart', 'Ruby', this.rubydata)
-                this.drawlanguageMap('phpmapchart', 'PHP', this.phpdata)
-                this.drawlanguageMap('cssmapchart', 'CSS', this.cssdata)
-                this.drawlanguageMap('cplusmapchart', 'C++', this.cplusdata)
-                this.drawlanguageMap('cmapchart', 'C', this.cdata)
-                this.drawlanguageMap('shellmapchart', 'Shell',this.shelldata)
-                this.drawlanguageMap('ocmapchart', 'Objective-C', this.objectcdata)
+                this.drawlanguageMap('allmapchart', '', this.alldata)
                 this.chart.setOption(this.option, true)
             },
             drawlanguageMap(id, language, data1) {
@@ -303,61 +273,87 @@
                 this.chart.setOption(this.option, false)
                 switch (param.data.name) {
                     case 'United States of America':
-                        for (let i = 0; i < this.usadata.length; i++) {
-                            var item = this.usadata[i]
+                        for (let i = 0; i < this.alldata.length; i++) {
+                            var item = this.alldata[i]
                             this.option.series[0].data.push({
                                 name: item.name,
                                 value: item.value
                             })
                         }
                         this.option.title.text = 'github用户美国分布图'
-                        this.option.dataRange.max = this.getdatamax(this.usadata)
+                        this.option.dataRange.max = this.getdatamax(this.alldata)
                         Object.assign(this.option.series[0], {
                             mapType: 'usa',
                             width: '275%', 
                             height: '100%'
                         })
-                        this.drawlanguageMap('allmapchart', '', this.usadata)
-                        this.drawlanguageMap('jsmapchart', 'Javascript', this.jsdata)
-                        this.drawlanguageMap('javamapchart', 'Java', this.javadata)
-                        this.drawlanguageMap('pythonmapchart', 'Python', this.pythondata)
-                        this.drawlanguageMap('rubymapchart', 'Ruby', this.rubydata)
-                        this.drawlanguageMap('phpmapchart', 'PHP', this.phpdata)
-                        this.drawlanguageMap('cssmapchart', 'CSS', this.cssdata)
-                        this.drawlanguageMap('cplusmapchart', 'C++', this.cplusdata)
-                        this.drawlanguageMap('cmapchart', 'C', this.cdata)
-                        this.drawlanguageMap('shellmapchart', 'Shell',this.shelldata)
-                        this.drawlanguageMap('ocmapchart', 'Objective-C', this.objectcdata)
+                        this.drawlanguageMap('allmapchart', '', this.alldata)
+                        // this.drawlanguageMap('jsmapchart', 'Javascript', this.jsdata)
+                        // this.drawlanguageMap('javamapchart', 'Java', this.javadata)
+                        // this.drawlanguageMap('pythonmapchart', 'Python', this.pythondata)
+                        // this.drawlanguageMap('rubymapchart', 'Ruby', this.rubydata)
+                        // this.drawlanguageMap('phpmapchart', 'PHP', this.phpdata)
+                        // this.drawlanguageMap('cssmapchart', 'CSS', this.cssdata)
+                        // this.drawlanguageMap('cplusmapchart', 'C++', this.cplusdata)
+                        // this.drawlanguageMap('cmapchart', 'C', this.cdata)
+                        // this.drawlanguageMap('shellmapchart', 'Shell',this.shelldata)
+                        // this.drawlanguageMap('ocmapchart', 'Objective-C', this.objectcdata)
                         break
                     case 'China':
-                        for (let i = 0; i < this.chinadata.length; i++) {
-                            var item1 = this.chinadata[i]
+                        for (let i = 0; i < this.alldata.length; i++) {
+                            var item1 = this.alldata[i]
                             this.option.series[0].data.push({
                                 name: item1.name,
                                 value: item1.value
                             })
                         }
                         this.option.title.text = 'github用户中国分布图'
-                        this.option.dataRange.max = this.getdatamax(this.chinadata)
+                        this.option.dataRange.max = this.getdatamax(this.alldata)
                         Object.assign(this.option.series[0], {
                             mapType: 'china',
                             width: '100%',
                             height: '100%'
                         })
-                        this.drawlanguageMap('allmapchart', '', this.chinadata)
-                        this.drawlanguageMap('jsmapchart', 'Javascript', this.jsdata)
-                        this.drawlanguageMap('javamapchart', 'Java', this.javadata)
-                        this.drawlanguageMap('pythonmapchart', 'Python', this.pythondata)
-                        this.drawlanguageMap('rubymapchart', 'Ruby', this.rubydata)
-                        this.drawlanguageMap('phpmapchart', 'PHP', this.phpdata)
-                        this.drawlanguageMap('cssmapchart', 'CSS', this.cssdata)
-                        this.drawlanguageMap('cplusmapchart', 'C++', this.cplusdata)
-                        this.drawlanguageMap('cmapchart', 'C', this.cdata)
-                        this.drawlanguageMap('shellmapchart', 'Shell',this.shelldata)
-                        this.drawlanguageMap('ocmapchart', 'Objective-C', this.objectcdata)
+                        this.drawlanguageMap('allmapchart', '', this.alldata)
+                        // this.drawlanguageMap('jsmapchart', 'Javascript', this.jsdata)
+                        // this.drawlanguageMap('javamapchart', 'Java', this.javadata)
+                        // this.drawlanguageMap('pythonmapchart', 'Python', this.pythondata)
+                        // this.drawlanguageMap('rubymapchart', 'Ruby', this.rubydata)
+                        // this.drawlanguageMap('phpmapchart', 'PHP', this.phpdata)
+                        // this.drawlanguageMap('cssmapchart', 'CSS', this.cssdata)
+                        // this.drawlanguageMap('cplusmapchart', 'C++', this.cplusdata)
+                        // this.drawlanguageMap('cmapchart', 'C', this.cdata)
+                        // this.drawlanguageMap('shellmapchart', 'Shell',this.shelldata)
+                        // this.drawlanguageMap('ocmapchart', 'Objective-C', this.objectcdata)
                         break
                 }
                 this.chart.setOption(this.option, true)
+            },
+            getchoose () {
+                var obj = document.getElementsByName('name');
+                for (let i = 0; i < obj.length; i++) {
+                    if (obj[i].checked){
+                        console.log(obj[i].value)
+                        this.todraw(obj[i].value)
+                    }
+                }
+            },
+            todraw (lanname) {
+                console.log(lanname)
+                switch (lanname) {
+                    case 'All': this.drawlanguageMap('allmapchart', '', this.alldata); break;
+                    case 'Javascript': this.drawlanguageMap('allmapchart', 'Javascript', this.jsdata); break;
+                    case 'Java': this.drawlanguageMap('allmapchart', 'Java', this.javadata); break;
+                    case 'Python': this.drawlanguageMap('allmapchart', 'Python', this.pythondata); break;
+                    case 'Ruby': this.drawlanguageMap('allmapchart', 'Ruby', this.rubydata); break;
+                    case 'PHP': this.drawlanguageMap('allmapchart', 'PHP', this.phpdata); break;
+                    case 'CSS': this.drawlanguageMap('allmapchart', 'CSS', this.cssdata); break;
+                    case 'C++': this.drawlanguageMap('allmapchart', 'C++', this.cplusdata); break;
+                    case 'C': this.drawlanguageMap('allmapchart', 'C', this.cdata); break;
+                    case 'Shell': this.drawlanguageMap('allmapchart', 'Shell', this.shelldata); break;
+                    case 'Objective-C': this.drawlanguageMap('allmapchart', 'Objective-C', this.objectcdata); break;
+                }
+                this.setshow()
             },
             allfilter(cname) {
                 var cityname = ''
@@ -513,7 +509,50 @@
         width: 1000px;
         height: 600px;
     }
-    .javamapchart{
+    label {
+        font-size: 20px;
+        display: inline-block;
+        width: 15%;
+    }
+    input {
+        -webkit-appearance: none; /* remove default */
+        /*display: block;*/
+        margin: 10px;
+        width: 24px;
+        height: 24px;
+        border-radius: 12px;
+        cursor: pointer;
+        vertical-align: middle;
+        box-shadow: hsla(0,0%,100%,.15) 0 1px 1px, inset hsla(0,0%,0%,.5) 0 0 0 1px;
+        background-color: hsla(0,0%,0%,.2);
+        background-image: -webkit-radial-gradient( hsla(200,100%,90%,1) 0%, hsla(200,100%,70%,1) 15%, hsla(200,100%,60%,.3) 28%, hsla(200,100%,30%,0) 70% );
+        background-repeat: no-repeat;
+        -webkit-transition: background-position .15s cubic-bezier(.8, 0, 1, 1),
+            -webkit-transform .25s cubic-bezier(.8, 0, 1, 1);
+}
+input:checked {
+  -webkit-transition: background-position .2s .15s cubic-bezier(0, 0, .2, 1),
+    -webkit-transform .25s cubic-bezier(0, 0, .2, 1);
+}
+input:active {
+  -webkit-transform: scale(1.5);
+  -webkit-transition: -webkit-transform .1s cubic-bezier(0, 0, .2, 1);
+}
+
+/* The up/down direction logic */
+
+input,
+input:active {
+  background-position: 0 24px;
+}
+input:checked {
+  background-position: 0 0;
+}
+input:checked ~ input,
+input:checked ~ input:active {
+  background-position: 0 -24px;
+}
+    /*.javamapchart{
         top: 120px;
         margin-left: auto;
         margin-right: auto;
@@ -592,7 +631,7 @@
         margin-bottom: 180px;
         width: 1000px;
         height: 600px;
-    }
+    }*/
     .backbutton{
         position: absolute;
         top: 150px;

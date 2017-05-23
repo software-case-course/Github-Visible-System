@@ -50,6 +50,7 @@
     },
     methods: {
       worlddis() {
+        this.setshow()
         this.$router.replace({ path: '/worlddistribute' })
       },
       test() {
@@ -123,8 +124,8 @@
             },
             visualMap: {
               show: false,
-              min: 400,
-              max: 400,
+              min: 100000,
+              max: 1200000,
               color: textColor,
               inRange: {
                 colorAlpha: 1,
