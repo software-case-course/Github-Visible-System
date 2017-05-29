@@ -10,7 +10,6 @@ import java.net.Proxy;
 import java.net.SocketAddress;
 import java.net.URL;
 
-import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -51,7 +50,7 @@ public class RequestUtil{
         &&conn.getResponseCode()!=HttpURLConnection.HTTP_ACCEPTED
         &&conn.getResponseCode()!=HttpURLConnection.HTTP_CREATED){
             inputStream = conn.getErrorStream();
-            throw new Exception();
+            throw new Exception(String.valueOf(conn.getResponseCode()));
         }
         else inputStream = conn.getInputStream();
         
@@ -69,14 +68,6 @@ public class RequestUtil{
 
     public String request(String requestUrl) throws Exception{
         return request(requestUrl,"GET",null,null,null);
-    }
-
-    public JSONObject StringToJson(String str){
-        if(!str.startsWith("{")){
-            str = str.substring(1,str.length()-1);
-        }
-        str = str.replace("\\", "");
-        return new JSONObject(str);
     }
 
     public Proxy getProxy(String ip, int port){
