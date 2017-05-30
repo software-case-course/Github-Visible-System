@@ -14,7 +14,7 @@
     <div class="List">
       <div class="items">
         <ul v-for="item in searchdatare">
-          <a v-html="item.name" v-on:click="showwarehousedata();"></a>
+          <a v-html="item.name" v-on:click="showwarehousedata(item.count);"></a>
           <li>
             Description:&nbsp &nbsp{{item.des}}
           </li>
@@ -70,12 +70,18 @@
             setshow() {
                 this.changenav()
             },
-      getdata () {
-        this.searchdatare = config.searchdata
-        console.log(this.searchdatare[0].full_name)
+      async getdata () {
+        this.searchdatare = await config.searchdata
+        let count = 0;
+        // console.log(this.searchdatare)
+        this.searchdatare.forEach(item => {
+          item.count = count
+          count++
+        }) 
+        // console.log(this.searchdatare)
       },
-      showwarehousedata (){
-        this.$router.push({ path: '/person', query: { keyword: this.searchdatare[0].full_name } })
+      showwarehousedata (index){
+        this.$router.push({ path: '/person', query: { keyword: this.searchdatare[index].full_name } })
       },
       search_onclick() {
         // console.log(this.search_input)

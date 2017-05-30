@@ -79,12 +79,7 @@ export default {
       var modifydata = []
       let temp
       await this.$http.get('http://www.kongin.cn/git-view/repos/CodeFrequency?fullname=' + this.$route.query.keyword).then(response => {
-        if (response.body.length > 10) {
-          temp = 10
-        } else {
-          temp = response.body.length
-        }
-        for (let i = 0; i < temp; i++) {
+        for (let i = 0; i < response.body.length; i++) {
           var add = response.body[i].additions
           var del = response.body[i].deletions
           var dat = response.body[i].week
@@ -250,6 +245,13 @@ export default {
         legend: {
           data: ['The number of commit']
         },
+        title: {
+          left: 'left',
+          text: 'weekly commit',
+          textStyle: {
+            color: '#ccc'
+          }
+        },
         grid: {
           left: '3%',
           right: '4%',
@@ -308,6 +310,13 @@ export default {
         legend: {
           data: ['Punch Card'],
           left: 'right',
+          textStyle: {
+            color: '#ccc'
+          }
+        },
+        title: {
+          left: 'left',
+          text: 'Punch card',
           textStyle: {
             color: '#ccc'
           }
@@ -378,10 +387,27 @@ export default {
     async drawchart (id) {
       this.chart = echarts.init(document.getElementById(id))
       this.chart.setOption({
+        animation: false,
         tooltip: {
           trigger: 'axis',
           axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'line'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        title: {
+          left: 'left',
+          text: '增删代码量图',
+          textStyle: {
+            color: '#ccc'
+          }
+        },
+        toolbox: {
+            feature: {
+            /* datazoom: {
+              yAxisIndex: 'none'
+            },*/
+            restore: {},
+            saveAsImage: {}
           }
         },
         legend: {
@@ -399,6 +425,7 @@ export default {
         xAxis: [
           {
             type: 'value',
+            // boundaryGap: [0, '100%'],
             axisLine: {
               show: true,
               lineStyle: {
@@ -412,6 +439,7 @@ export default {
             type: 'category',
             axisTick: { show: false },
             data: this.weekdata,
+            // boundaryGap: false,
             axisLine: {
               show: false,
               lineStyle: {
@@ -419,6 +447,18 @@ export default {
               }
             },
           }
+        ],
+        dataZoom: [
+          {
+            show: true,
+            handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+            type: "slider",
+            start: 1,
+            end: 7,
+            yAxisIndex: [0],
+            borderColor: '#333333',
+            left: '0%',
+            }
         ],
         series: [
           {
@@ -472,7 +512,8 @@ export default {
 }
 #linegraph {
   height: 600px;
-  width: 80%
+  width: 80%;
+  margin-top: 100px
 }
 
 #commitgraph {
