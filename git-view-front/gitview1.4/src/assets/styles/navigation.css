@@ -12,11 +12,10 @@
   top: 0;
   z-index: 3;
   width: 100%;
-  height: 62%;
-  background-color: #CC0033;
+  height: 200px;
+  background-color: #222222;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
+  overflow: hidden;
 }
 
 .fade-enter-active{
@@ -27,14 +26,15 @@
   animation-name: fade-out;
   animation-duration: 0.5s;
 }
-@keyframes fade-in{
+@-webkit-keyframes fade-in{
   0%{
     opacity: 0;
   }
   100%{
     opacity: 0.6;
   }
-}@keyframes fade-out{
+}
+@-webkit-keyframes fade-out{
   0%{
     opacity: 0.6;
   }
@@ -61,12 +61,12 @@
     height: 60px;
   }
   100%{
-    height: 62%;
+    height: 200px;
   }
 }
 @keyframes slide-up{
   0%{
-    height: 62%;
+    height: 200px;
   }
   100%{
     height: 0;

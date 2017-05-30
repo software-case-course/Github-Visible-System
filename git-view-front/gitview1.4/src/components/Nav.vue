@@ -62,24 +62,25 @@ export default {
 <style scoped>
 .nav_content{
   width: 100%;
-  overflow: auto;
+  height: 100%;
+  min-width: 400px;
 }
 nav{
-  width: 100%;
-  min-width: 800px;
-  height: 60px;
-  background-color: #CC0033;
   position: fixed;
   top: 0;
   z-index: 4;
-  box-shadow: 0 0 20px #000;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: #222222;
+  border-bottom: 1px solid #ccc;
 }
 nav>p{
   display: inline-block;
   height: 60px;
   line-height: 60px;
   float: right;
-  color: #fff;
+  color: #155fea;
   font-size: 1.6rem;
   padding: 0 20px;
 }
@@ -88,14 +89,14 @@ nav>a{
   width: 100px;
   height: 60px;
   line-height: 60px;
-  color: #fff;
+  color: #155fea;
   font-size: 1.6rem;
   text-decoration: none;
   text-align: center;
   float:left;
   cursor: pointer;
 }
-nav>a:hover{
+/*nav>a:hover{
   background-color: #dd6d6d;
 }
 nav>a:active{
@@ -106,7 +107,7 @@ nav>p:hover{
 }
 nav>p:active{
   background-color: #840000;
-}
+}*/
 /*nav>img{
   margin-top: 24px;
   cursor: pointer;
@@ -137,14 +138,13 @@ nav>p:active{
   border: none;
   cursor: pointer;
 }
-/*.user-head-picture-box{
-  width: 200px;
-  height: 200px;
-  background-color: #000;
-  position: absolute;
-  bottom: 30%;
-  left: 15%;
-  border: 5px solid #fff;
-}*/
+@media screen and (max-width: 500px){
+  .search-box{
+    width: 100px;
+  }
+  nav>a{
+    width: 60px;
+  }
+}
 </style>
 

@@ -1,6 +1,7 @@
 package action;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import util.Author;
 import util.Authorize;
+import util.Relative;
 import util.RequestUtil;
 
 @Controller
@@ -20,6 +23,9 @@ import util.RequestUtil;
 public class PrivateSearch{
     @Autowired
     RequestUtil requestUtil;
+
+    @Autowired
+    Author author;
 
     String access_token = null;
 
@@ -43,5 +49,27 @@ public class PrivateSearch{
             e.printStackTrace();
             return "get token fail";
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/user")
+    public String getUser(String token){
+        return author.user(token);
+    }
+
+    @ResponseBody
+    @RequestMapping("/repos")
+    public String getRepos(String token){
+        return author.repos(token);
+    }
+
+    @ResponseBody
+    @RequestMapping("/languages")
+    public Map<String,Integer> getLanguages(String token){
+        Map<String,Integer> map = null;
+        try{
+            map = Relative.codes(token);
+        }catch(IOException e){}
+        return map;
     }
 }
