@@ -250,7 +250,7 @@ export default {
           left: 'left',
           text: 'weekly commit',
           textStyle: {
-            color: '#ccc'
+            color: lineColor
           }
         },
         grid: {
@@ -308,7 +308,7 @@ export default {
       var days = ['Sunday', 'Monday', 'Thursday', 'Wednesday', 'Tuesday', 'Friday', 'Saturday']
       var data = []
       var maxdata = this.maxcommit
-      console.log('max' + maxdata)
+      // console.log('浏览器' + window.screen.height + '/' +window.screen.width)
       data = this.commitdata.map(function (item) {
         return [item[1], item[0], item[2]]
       })
@@ -326,7 +326,7 @@ export default {
           left: 'left',
           text: 'Punch card',
           textStyle: {
-            color: '#ccc'
+            color: lineColor
           }
         },
         tooltip: {
@@ -387,8 +387,8 @@ export default {
             }
           },
           symbolSize: function (val) {
-            console.log(val[2])
-            return (Math.log(Math.pow(val[2], 1.5)) / Math.log(Math.pow(maxdata, 1 / 6)) + 2) * 4
+            // console.log(val[2])
+            return (Math.log(Math.pow(val[2], 1.5)) / Math.log(Math.pow(maxdata * window.screen.width / 800, 1 / 6)) + 2) * 4
           },
           data: data,
           animationDelay: function (idx) {
@@ -412,7 +412,7 @@ export default {
           left: 'left',
           text: '增删代码量图',
           textStyle: {
-            color: '#ccc'
+            color: lineColor
           }
         },
         toolbox: {
@@ -475,7 +475,7 @@ export default {
             start: 1,
             end: 7,
             yAxisIndex: [0],
-            borderColor: '#333333',
+            borderColor: '#ccc',
             left: '0%',
             }
         ],

@@ -29,26 +29,12 @@ export default {
       this.$router.replace({path: '/search', query: {keyword: this.search_input}})
     },
     setShow () {
-      // console.log(this.shownav)
       this.changenav()
-      // console.log(this.shownav)
-      // config.showNav = !config.showNav
     },
     
   },
   computed: {
     ...mapGetters(['shownav'])
-    // configShow: function () {
-    //   // console.log(config.showNav)
-    //   // let result = this.setShownav()
-    //   // console.log(result)
-    //   config.showNav = this.show
-    //   return config.showNav
-    // },
-    // num: function () {
-    //   this.num2 = this.num1 + 3
-    // //   return this.num2
-    // }
   },
   data () {
     return {
