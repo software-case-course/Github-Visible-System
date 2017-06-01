@@ -14,7 +14,12 @@ public class SearchDetail{
     RequestUtil requestUtil;
 
     public String getContributorStat(String fullname){
-        String result = searchStats(fullname, "contributors");
+        String result = null;
+        try{
+            result = searchStats(fullname, "contributors");
+        }catch(Exception e){
+            return "{error_message:" + e.getMessage() + "}";
+        }
         if(result != null){
             JSONArray jsonArray = new JSONArray(result);
             Iterator<Object> iterator = jsonArray.iterator();
@@ -33,7 +38,12 @@ public class SearchDetail{
     }
 
     public String getWeeklyCommit(String fullname){
-        String result = searchStats(fullname, "commit_activity");
+        String result = null;
+        try{
+            result = searchStats(fullname, "commit_activity");
+        }catch(Exception e){
+            return "{error_message:" + e.getMessage() + "}";
+        }
         if(result != null){
             JSONArray jsonArray = new JSONArray(result);
             Iterator<Object> iterator = jsonArray.iterator();
@@ -62,7 +72,12 @@ public class SearchDetail{
     }
 
     public String getCommitActivity(String fullname){
-        String result = searchStats(fullname, "commit_activity");
+        String result = null;
+        try{
+            result = searchStats(fullname, "commit_activity");
+        }catch(Exception e){
+            return "{error_message:" + e.getMessage() + "}";
+        }
         if(result != null){
             JSONArray jsonArray = new JSONArray(result);
             Iterator<Object> iterator = jsonArray.iterator();
@@ -84,7 +99,12 @@ public class SearchDetail{
     }
 
     public String getPunchCard(String fullname){
-        String result = searchStats(fullname, "punch_card");
+        String result = null;
+        try{
+            result = searchStats(fullname, "punch_card");
+        }catch(Exception e){
+            return "{error_message:" + e.getMessage() + "}";
+        }
         if(result != null){
             JSONArray jsonArray = new JSONArray(result);
             Iterator<Object> iterator = jsonArray.iterator();
@@ -105,7 +125,12 @@ public class SearchDetail{
     }
 
     public String getCodeFrequency(String fullname){
-        String result = searchStats(fullname, "code_frequency");
+        String result = null;
+        try{
+            result = searchStats(fullname, "code_frequency");
+        }catch(Exception e){
+            return "{error_message:" + e.getMessage() + "}";
+        }
         if(result != null){
             JSONArray jsonArray = new JSONArray(result);
             Iterator<Object> iterator = jsonArray.iterator();
@@ -130,13 +155,14 @@ public class SearchDetail{
     }
 
    
-    private String searchStats(String fullname, String part){
+    private String searchStats(String fullname, String part) throws Exception{
         String result = null;
         try{
             do{
                 result = requestUtil.request("https://api.github.com/repos/"+fullname+"/stats/"+part);
             }while(result.startsWith("{"));
         }catch(Exception e){
+            throw e;
         }
         return result;
     }

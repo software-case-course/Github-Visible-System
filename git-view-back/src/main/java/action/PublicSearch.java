@@ -44,24 +44,6 @@ public class PublicSearch{
     @Autowired
     AreaLanguageService areaLanguageService;
 
-    /**
-     * @param repo
-     * @param sort stars|forks|updated
-     * @param order asc|desc
-     * @param begin get commits after the date, format: 2016-01-01
-     * @param end get commits before the date, format: 2016-01-01
-     * @return json of repositories
-     */
-    
-    // @ResponseBody
-    // @RequestMapping("/commit")
-    // public String searchCommit(String key) throws Exception{
-    //     if(key == null) key = "";
-    //     return requestUtil.requestForMap(
-    //         "https://api.github.com/search/commits?q="+key+"+repo:mybatis/spring",
-    //         "GET", null, "application/vnd.github.cloak-preview",null);
-    // }
-
     @ResponseBody
     @RequestMapping("/support_languages")
     public List<LanguageDetail> languageDetail() throws IOException{

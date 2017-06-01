@@ -14,7 +14,7 @@ public class Author{
             result = requestUtil.request("https://api.github.com/user?access_token=" + token);
         }catch (Exception e){
             // System.err.println(e.getLocalizedMessage());
-            return "{\"error_code\": 401}";
+            return "{\"error_message\": 401}";
         }
         return result;
     }
@@ -25,7 +25,7 @@ public class Author{
             result = requestUtil.request("https://api.github.com/user/repos?access_token=" + token);
         }catch (Exception e){
             // System.err.println(e.getLocalizedMessage());
-            return "{\"error_code\": 401}";
+            return "{\"error_message\": 401}";
         }
         return result;
     }
