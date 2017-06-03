@@ -113,7 +113,7 @@
                         text: ['High', 'Low'],
                         realtime: false,
                         calculable: true,
-                        color: ['#003366', '#006699', '#99CCFF'],
+                        color: ['#ff2c00', '#1142aa', '#c6f500'],
                         textStyle: {
                             color: '#000'
                         }
@@ -513,6 +513,7 @@
         font-size: 20px;
         display: inline-block;
         width: 15%;
+        color: #ccc;
     }
     input {
         -webkit-appearance: none; /* remove default */

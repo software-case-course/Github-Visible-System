@@ -25,6 +25,7 @@ export default {
     async search_onclick () {
       await this.$http.get('https://api.github.com/search/repositories?q=' + this.search_input + '&sort=forks').then(response => {
         config.searchdata = response.body.items
+        // console.log(response)
       })
       this.$router.replace({path: '/search', query: {keyword: this.search_input}})
     },
