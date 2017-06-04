@@ -18,13 +18,13 @@
             Description:&nbsp &nbsp{{item.des}}
           </li>
           <li>
-            Fork Count:&nbsp &nbsp{{item.fork}}
+            Fork Count:&nbsp &nbsp{{item.forks_count}}
           </li>
           <li>
-            Watchers Count:&nbsp &nbsp{{item.watch}}
+            Watchers Count:&nbsp &nbsp{{item.watchers_count}}
           </li>
           <li>
-            Star Count:&nbsp &nbsp{{item.star}}
+            Star Count:&nbsp &nbsp{{item.stargazers_count}}
           </li>
           <li>
             Score:&nbsp &nbsp{{item.score}}
