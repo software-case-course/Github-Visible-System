@@ -129,7 +129,7 @@ public class SearchDetail{
         try{
             result = searchStats(fullname, "code_frequency");
         }catch(Exception e){
-            return "{error_message:" + e.getMessage() + "}";
+            return "{error_message:" + e + "}";
         }
         if(result != null){
             JSONArray jsonArray = new JSONArray(result);

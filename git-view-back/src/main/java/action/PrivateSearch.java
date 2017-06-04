@@ -35,8 +35,8 @@ public class PrivateSearch{
     }
 
     @RequestMapping("/authorize")
-    public void authorize(HttpServletResponse response) throws IOException{
-        response.sendRedirect("https:/github.com/login/oauth/authorize?client_id=2687357014dac98c13a9&scope=user");
+    public void authorize(String redirect_uri,HttpServletResponse response) throws IOException{
+        response.sendRedirect("https:/github.com/login/oauth/authorize?client_id=2687357014dac98c13a9&scope=user&redirect_uri="+redirect_uri);
     }
 
     @ResponseBody
