@@ -3,7 +3,7 @@
   <nav v-if="!this.shownav">
     <a href="#">首页</a>
     <!--<p>5MAN.com</p>-->
-    <a>登录</a>
+    <a @click="tologin" id="permsg">登录</a>
     <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
     <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
     <button type="submit" class="search-icon" @click="search_onclick">
@@ -20,8 +20,15 @@ import config from '../config'
 import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'nav',
+  mounted() {
+    this.$nextTick(function () {
+      if(window.location.href.indexOf('code') != -1){
+        this.geturlstr()
+      }
+    })
+  },
   methods: {
-    ...mapActions(['changenav']),
+    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined']),
     async search_onclick () {
       await this.$http.get('https://api.github.com/search/repositories?q=' + this.search_input + '&sort=forks').then(response => {
         config.searchdata = response.body.items
@@ -32,13 +39,48 @@ export default {
     setShow () {
       this.changenav()
     },
-    
+    tologin () {
+      window.open('http://www.kongin.cn/git-view/private/authorize?redirect_uri=' + window.location.href)
+      // var urlstr = window.location
+      // console.log(urlstr)
+    },
+    async geturlstr () {
+      var islogin = this.$localStorage.get('islogin')
+      this.$store.commit('setislogined', islogin)
+      var urlstr = window.location.href
+      // console.log(urlstr)
+      if(!this.islogined) {
+        var indexofcode = urlstr.indexOf('code')
+        var code = urlstr.substr(indexofcode, 25)
+        this.$store.commit('getcodestr',code)
+        console.log(this.codestr)
+        const response1 = await this.$http.get('http://www.kongin.cn/git-view/private/gettoken?' + this.codestr)
+        if(response1.status === 200){
+          var token = response1.bodyText
+          this.$store.commit('gettokenstr', token)
+          this.$localStorage.set('token', token)
+          console.log('登录成功')
+          this.$store.commit('setislogined', true)
+          this.$localStorage.set('islogin', this.islogined)
+        }
+      }
+      // console.log(code)
+      else {
+        var token = this.$localStorage.get('token')
+        this.$store.commit('gettokenstr', token)
+        console.log('已经登录')
+      }
+      console.log(this.tokenstr)
+      // const response2 = await this.$http.get('http://www.kongin.cn/git-view/private/user?token=' + this.tokenstr)
+      // console.log(response2)
+    }
   },
   computed: {
-    ...mapGetters(['shownav'])
+    ...mapGetters(['shownav', 'codestr', 'tokenstr', 'islogined'])
   },
   data () {
     return {
+      pername: '',
       config: '',
       show: false,
       search_input: ''
