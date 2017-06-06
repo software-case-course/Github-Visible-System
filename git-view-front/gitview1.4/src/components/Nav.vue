@@ -3,7 +3,8 @@
   <nav v-if="!this.shownav">
     <a href="#">首页</a>
     <!--<p>5MAN.com</p>-->
-    <a @click="tologin" id="permsg">登录</a>
+    <a @click="tologin" id="permsg">{{this.login_permsg}}</a>
+    <img v-show="this.downiconshow" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png"></img>
     <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
     <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
     <button type="submit" class="search-icon" @click="search_onclick">
@@ -22,13 +23,16 @@ export default {
   name: 'nav',
   mounted() {
     this.$nextTick(function () {
-      if(window.location.href.indexOf('code') != -1){
+      window.addEventListener('beforeunload', this.handleunload)
+      if(((window.location.href).indexOf('code') != -1) && !this.$session.has('token')){
         this.geturlstr()
+      }else if(this.$session.has('token')) {
+        this.getpermsg()
       }
     })
   },
   methods: {
-    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined']),
+    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined', 'setpermsg', 'sethomeurl']),
     async search_onclick () {
       await this.$http.get('https://api.github.com/search/repositories?q=' + this.search_input + '&sort=forks').then(response => {
         config.searchdata = response.body.items
@@ -39,47 +43,63 @@ export default {
     setShow () {
       this.changenav()
     },
+    handleunload() {
+      alert('555')
+    },
     tologin () {
-      window.open('http://www.kongin.cn/git-view/private/authorize?redirect_uri=' + window.location.href)
-      // var urlstr = window.location
-      // console.log(urlstr)
+      if(this.login_permsg === '登录') {
+        var url = window.location.href
+        this.$store.commit('sethomeurl', url)
+        console.log(this.homeurl)
+        this.$session.set('homeurl', this.homeurl)
+        this.$store.commit('setislogined', true)
+        this.$session.set('islogin', true)
+        window.location.href = ('http://www.kongin.cn/git-view/private/authorize?redirect_uri=' + this.homeurl)
+      }else {
+        alert('已经登录')
+      }
     },
     async geturlstr () {
-      var islogin = this.$localStorage.get('islogin')
-      this.$store.commit('setislogined', islogin)
-      var urlstr = window.location.href
-      // console.log(urlstr)
-      if(!this.islogined) {
-        var indexofcode = urlstr.indexOf('code')
-        var code = urlstr.substr(indexofcode, 25)
-        this.$store.commit('getcodestr',code)
-        console.log(this.codestr)
-        const response1 = await this.$http.get('http://www.kongin.cn/git-view/private/gettoken?' + this.codestr)
-        if(response1.status === 200){
-          var token = response1.bodyText
-          this.$store.commit('gettokenstr', token)
-          this.$localStorage.set('token', token)
-          console.log('登录成功')
-          this.$store.commit('setislogined', true)
-          this.$localStorage.set('islogin', this.islogined)
+     var nowurl = window.location.href
+     var codeindex = nowurl.indexOf('code')
+     var urlcode = nowurl.substr(codeindex, 25)
+     this.$store.commit('getcodestr', urlcode)
+     const response = await this.$http.get('http://www.kongin.cn/git-view/private/gettoken?' + this.codestr)
+     // console.log(response)
+     if(response.status === 200) {
+       var urltoken = response.bodyText
+       this.$store.commit('gettokenstr', urltoken)
+       this.$session.set('token',this.tokenstr)
+       // console.log(this.tokenstr)
+     }
+     this.getpermsg()
+    },
+    async getpermsg () {
+      var token = this.$session.get('token')
+      console.log(token)
+      this.$store.commit('gettokenstr', token)
+      const response = await this.$http.get('http://www.kongin.cn/git-view/private/user?token=' + this.tokenstr)
+      console.log(response)
+      if(response.status === 200) {
+        if(response.bodyText.indexOf('error_message') != -1) {
+          alert('登陆已失效，请重新登录')
+          var url = this.$session.get('homeurl')
+          this.$store.commit('sethomeurl', url)
+          this.$session.clear()
+          window.location.href = (this.homeurl)
+        } else {
+          this.$session.set('token', '55555')
         }
       }
-      // console.log(code)
-      else {
-        var token = this.$localStorage.get('token')
-        this.$store.commit('gettokenstr', token)
-        console.log('已经登录')
-      }
-      console.log(this.tokenstr)
-      // const response2 = await this.$http.get('http://www.kongin.cn/git-view/private/user?token=' + this.tokenstr)
-      // console.log(response2)
     }
   },
   computed: {
-    ...mapGetters(['shownav', 'codestr', 'tokenstr', 'islogined'])
+    ...mapGetters(['shownav', 'codestr', 'tokenstr', 'islogined', 'permsgJson', 'homeurl'])
   },
   data () {
     return {
+      downiconshow: false,
+      login_permsg: '登录',
       pername: '',
       config: '',
       show: false,
@@ -104,6 +124,16 @@ nav{
   background-color: #222222;
   border-bottom: 1px solid #ccc;
 }
+nav>img{
+  display: inline-block;
+  line-height: 60px;
+  top:"center";
+  margin-top: 18px;
+  margin-left: -22px;
+  cursor: pointer;
+  width:27px; 
+  height:27px;
+}
 nav>p{
   display: inline-block;
   height: 60px;
@@ -119,7 +149,7 @@ nav>a{
   height: 60px;
   line-height: 60px;
   color: #155fea;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-decoration: none;
   text-align: center;
   float:left;

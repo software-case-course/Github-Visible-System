@@ -1,12 +1,14 @@
 const state = {
   codestr: '',
   tokenstr: '',
+  homeurl: '',
   islogined: false
 }
 const getters = {
   codestr: state => state.codestr,
   tokenstr: state => state.tokenstr,
-  islogined: state => state.islogined
+  islogined: state => state.islogined,
+  homeurl: state => state.homeurl
 }
 const mutations = {
   getcodestr (state, code) {
@@ -17,7 +19,10 @@ const mutations = {
   },
   setislogined (state, login) {
     state.islogined = login
-    console.log(state.islogined)
+    // console.log(state.islogined)
+  },
+  sethomeurl (state, url) {
+    state.homeurl = url
   }
 }
 const actions = {
@@ -29,6 +34,9 @@ const actions = {
   },
   setislogined ({commit}) {
     commit('setislogined')
+  },
+  sethomeurl ({commit}) {
+    commit('sethomeurl')
   }
 }
 export default {

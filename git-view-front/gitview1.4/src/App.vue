@@ -8,7 +8,10 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  created () {
+    this.$session.start()
+  }
 }
 </script>
 
