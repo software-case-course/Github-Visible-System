@@ -51,7 +51,7 @@
     methods: {
       worlddis() {
         this.setshow()
-        this.$router.replace({ path: '/worlddistribute' })
+        this.$router.push({ path: '/worlddistribute' })
       },
       test() {
         console.log()
@@ -364,7 +364,7 @@
 }
 .selector-box{
   display: inline-block;
-  line-height: 134px;
+  line-height: 150px;
   width: 20%;
   height: 134px;
   font-size: 2rem;

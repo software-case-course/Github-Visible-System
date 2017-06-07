@@ -3,8 +3,23 @@
   <nav v-if="!this.shownav">
     <a href="#">首页</a>
     <!--<p>5MAN.com</p>-->
+    <!--<a @click="totest">to</a>-->
     <a @click="tologin" id="permsg">{{this.login_permsg}}</a>
-    <img v-show="this.downiconshow" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png"></img>
+    <img v-show="this.downiconshow" @click="tosetpershow" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png"></img>
+    <transition name="slide">
+      <div id="usermsg" v-show="this.showusermsg">
+        <p>用户：{{this.login_permsg}}</p>
+        <label @click="togithub"><p>前往github</p></label>
+        <label @click="tofollowers"><p>Follower</p></label>
+        <label @click="tofollowing"><p>Following</p></label>
+        <label @click="tostarred"><p>关注项目</p></label>
+        <label @click="topermsg"><p>个人信息</p></label>
+        <label @click="tosignout"><p>退出</p></label>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div v-show="this.showusermsg" class="background-shelter" @click="tosetpershow"></div>
+    </transition>
     <!--<p @click="barEchaShow = !barEchaShow">仓库及用户数量</p>
     <p @click="echaShow = !echaShow">Github占比前十语言</p>-->
     <button type="submit" class="search-icon" @click="search_onclick">
@@ -23,7 +38,7 @@ export default {
   name: 'nav',
   mounted() {
     this.$nextTick(function () {
-      window.addEventListener('beforeunload', this.handleunload)
+      // window.addEventListener('beforeunload', this.handleunload)
       if(((window.location.href).indexOf('code') != -1) && !this.$session.has('token')){
         this.geturlstr()
       }else if(this.$session.has('token')) {
@@ -32,7 +47,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined', 'setpermsg', 'sethomeurl']),
+    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined', 'setpermsg', 'sethomeurl', 'setusermsg']),
     async search_onclick () {
       await this.$http.get('https://api.github.com/search/repositories?q=' + this.search_input + '&sort=forks').then(response => {
         config.searchdata = response.body.items
@@ -43,20 +58,24 @@ export default {
     setShow () {
       this.changenav()
     },
-    handleunload() {
-      alert('555')
-    },
+    // handleunload() {
+    //   alert('555')
+    // },
     tologin () {
       if(this.login_permsg === '登录') {
         var url = window.location.href
+        if(url.indexOf('#') != -1){
+          var urlindex = url.indexOf('#')
+          url = url.substr(0, urlindex)
+        }
         this.$store.commit('sethomeurl', url)
-        console.log(this.homeurl)
+        // console.log(this.homeurl)
         this.$session.set('homeurl', this.homeurl)
         this.$store.commit('setislogined', true)
         this.$session.set('islogin', true)
         window.location.href = ('http://www.kongin.cn/git-view/private/authorize?redirect_uri=' + this.homeurl)
       }else {
-        alert('已经登录')
+        this.$router.push({path: '/personalmsg', query:{name: this.login_permsg}})
       }
     },
     async geturlstr () {
@@ -76,22 +95,61 @@ export default {
     },
     async getpermsg () {
       var token = this.$session.get('token')
-      console.log(token)
+      // console.log(token)
       this.$store.commit('gettokenstr', token)
       const response = await this.$http.get('http://www.kongin.cn/git-view/private/user?token=' + this.tokenstr)
-      console.log(response)
+      // console.log(response)
       if(response.status === 200) {
         if(response.bodyText.indexOf('error_message') != -1) {
           alert('登陆已失效，请重新登录')
           var url = this.$session.get('homeurl')
           this.$store.commit('sethomeurl', url)
           this.$session.clear()
+          this.downiconshow = false
           window.location.href = (this.homeurl)
+          this.$store.commit('setislogined', false)
         } else {
-          this.$session.set('token', '55555')
+          var perjson = []
+          perjson = JSON.parse(response.bodyText)
+          this.$store.commit('setpermsg', perjson)
+          // console.log(this.permsgJson)
+          this.login_permsg = this.permsgJson.login
+          this.downiconshow = true
+          this.$store.commit('setislogined', true)
         }
       }
+    },
+    tosetpershow () {
+      this.showusermsg = !this.showusermsg
+    },
+    togithub () {
+      window.open(this.permsgJson.html_url)
+    },
+    tofollowers () {
+      this.$router.push({path: '/followers', query: {name: this.login_permsg}})
+      this.showusermsg = false
+    },
+    tofollowing () {
+      this.$router.push({path: '/following', query:{name: this.login_permsg}})
+      this.showusermsg = false
+    },
+    tostarred () {
+      this.$router.push({path: '/starred', query:{name: this.login_permsg}})
+      this.showusermsg = false
+    },
+    tosignout () {
+      var url = this.$session.get ('homeurl')
+      this.$session.clear()
+      console.log(url)
+      window.location.href = url
+    },
+    topermsg () {
+      this.$router.push({path: '/personalmsg', query:{name: this.login_permsg}})
+      this.showusermsg = false
     }
+    // totest () {
+    //   this.$router.push({path: '/personalmsg'})
+    // }
   },
   computed: {
     ...mapGetters(['shownav', 'codestr', 'tokenstr', 'islogined', 'permsgJson', 'homeurl'])
@@ -103,7 +161,8 @@ export default {
       pername: '',
       config: '',
       show: false,
-      search_input: ''
+      search_input: '',
+      showusermsg: false
     }
   }
 }
@@ -113,6 +172,43 @@ export default {
   width: 100%;
   height: 100%;
   min-width: 400px;
+}
+#usermsg{
+  width: 10%;
+  height: 230px;
+  background-color: #222222;
+  box-sizing: border-box;
+  border: 1px solid #222222;
+  z-index: 5;
+  position: fixed;
+  top:61px;
+  left: 6.5%;
+  overflow: hidden;
+}
+label{
+  width: 10%;
+  cursor: pointer;
+}
+label>p{
+  font-size: 1.6rem;
+  height:30px;
+  border-bottom: 1px solid #206676;
+  text-align: center;
+  cursor: pointer;
+  line-height: 30px;
+  color: #ccc;
+}
+label>p:hover{
+  background-color: #38b2ce;
+}
+p{
+  color: #ccc;
+  font-size: 1.6rem;
+  height: 40px;
+  border-bottom: 1px solid #206676;
+  text-align: center;
+  line-height: 40px;
+  cursor: default;
 }
 nav{
   position: fixed;

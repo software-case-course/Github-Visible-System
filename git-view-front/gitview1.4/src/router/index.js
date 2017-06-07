@@ -6,6 +6,10 @@ import SearchResult from '@/components/SearchResult'
 import worlddis from '@/components/WorldDistribute'
 import Nav from '@/components/Nav'
 import Person from '@/components/Person'
+import Personalmsg from '@/components/Personalmsg'
+import Followers from '@/components/Followers'
+import Following from '@/components/Following'
+import Starred from '@/components/Starred'
 import VueLocalstorage from 'vue-localstorage'
 import VueSession from 'vue-session'
 
@@ -49,6 +53,38 @@ export default new Router({
           path: '/person',
           name: 'person',
           component: Person
+        },
+        {
+          path: '/personalmsg',
+          name: 'personalmsg',
+          component: Personalmsg,
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: '/followers',
+          name: 'followers',
+          component: Followers,
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: '/following',
+          name: 'following',
+          component: Following,
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: '/starred',
+          name: 'starred',
+          component: Starred,
+          meta: {
+            requireAuth: true
+          }
         }
       ]
     }
