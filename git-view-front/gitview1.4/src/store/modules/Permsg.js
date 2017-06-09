@@ -1,25 +1,33 @@
 const state = {
   permsgJson: [],
-  usermsgJson: []
+  reposmsgJson: [],
+  languagemsg: []
 }
 const getters = {
   permsgJson: state => state.permsgJson,
-  usermsgJson: state => state.usermsgJson
+  reposmsgJson: state => state.reposrmsgJson,
+  languagemsg: state => state.languagemsg
 }
 const mutations = {
   setpermsg (state, permsg) {
     state.permsgJson = permsg
   },
-  setusermsg (state, usermsg) {
-    state.usermsgJson = usermsg
+  setreposmsg (state, reposmsg) {
+    state.reposrmsgJson = reposmsg
+  },
+  setlanguagemsg (state, lanmsg) {
+    state.languagemsg = lanmsg
   }
 }
 const actions = {
   setpermsg ({commit}) {
     commit('setpermsg')
   },
-  setusermsg ({commit}) {
-    commit('setusermsg')
+  setreposmsg ({commit}) {
+    commit('setreposmsg')
+  },
+  setlanguagemsg ({commit}) {
+    commit('setlanguagemsg')
   }
 }
 export default {

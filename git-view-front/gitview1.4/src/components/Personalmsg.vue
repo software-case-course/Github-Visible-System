@@ -65,6 +65,9 @@ export default {
         this.publicrepos = this.filter(this.permsg.public_repos)
         this.updatetime = this.filter(this.permsg.updated_at)
         this.id = this.filter(this.permsg.id)
+        var timeindex = this.updatetime.indexOf('T')
+        this.updatetime = this.updatetime.substr(0, timeindex)
+        this.createdtime = this.createdtime.substr(0, timeindex)
       }
     },
     togithub () {

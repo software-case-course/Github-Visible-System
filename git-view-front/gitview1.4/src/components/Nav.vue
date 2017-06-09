@@ -10,10 +10,12 @@
       <div id="usermsg" v-show="this.showusermsg">
         <p>用户：{{this.login_permsg}}</p>
         <label @click="togithub"><p>前往github</p></label>
+        <label @click="torepo"><p>前往个人仓库</p></label>
         <label @click="tofollowers"><p>Follower</p></label>
         <label @click="tofollowing"><p>Following</p></label>
         <label @click="tostarred"><p>关注项目</p></label>
         <label @click="topermsg"><p>个人信息</p></label>
+        <label><p></p></label>
         <label @click="tosignout"><p>退出</p></label>
       </div>
     </transition>
@@ -47,7 +49,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined', 'setpermsg', 'sethomeurl', 'setusermsg']),
+    ...mapActions(['changenav', 'gettokenstr', 'getcodestr', 'setislogined', 'setpermsg', 'sethomeurl', 'setusermsg', 'setlanguagemsg', 'setreposmsg']),
     async search_onclick () {
       await this.$http.get('https://api.github.com/search/repositories?q=' + this.search_input + '&sort=forks').then(response => {
         config.searchdata = response.body.items
@@ -143,6 +145,30 @@ export default {
       console.log(url)
       window.location.href = url
     },
+    async torepo () {
+      var token = this.$session.get('token')
+      this.$store.commit('gettokenstr', token)
+      const response1 = await this.$http.get('http://www.kongin.cn/git-view/private/repos?token=' + this.tokenstr)
+      const response2 = await this.$http.get('http://www.kongin.cn/git-view/private/languages?token=' + this.tokenstr)
+      // console.log(response1)
+      // console.log(response2)
+      if((response1.status === 200) && response2.status === 200) {
+        if((response1.bodyText.indexOf('error_message') === -1) && (response2.bodyText.indexOf('error_message') === -1)) {
+          var data1 = response1.body
+          var data2 = response2.body
+          // console.log(data2)
+          this.$store.commit('setreposmsg', data1)
+          this.$store.commit('setlanguagemsg', data2)
+          this.showusermsg = false
+          this.$router.push({path: '/personalrepo', query: {name: this.login_permsg}})
+        } else {
+          alert('登录失效，请重新登录')
+          this.$store.commit('sethomeurl', this.$session.get(homeurl))
+          this.$session.clear()
+          window.location.href = this.homeurl
+        }
+      }
+    },
     topermsg () {
       this.$router.push({path: '/personalmsg', query:{name: this.login_permsg}})
       this.showusermsg = false
@@ -175,7 +201,7 @@ export default {
 }
 #usermsg{
   width: 10%;
-  height: 230px;
+  height: 200px;
   background-color: #222222;
   box-sizing: border-box;
   border: 1px solid #222222;
@@ -190,12 +216,12 @@ label{
   cursor: pointer;
 }
 label>p{
-  font-size: 1.6rem;
-  height:30px;
+  font-size: 1.2rem;
+  height: 20px;
   border-bottom: 1px solid #206676;
   text-align: center;
   cursor: pointer;
-  line-height: 30px;
+  line-height: 20px;
   color: #ccc;
 }
 label>p:hover{
@@ -204,10 +230,10 @@ label>p:hover{
 p{
   color: #ccc;
   font-size: 1.6rem;
-  height: 40px;
+  height: 30px;
   border-bottom: 1px solid #206676;
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
   cursor: default;
 }
 nav{
@@ -301,5 +327,6 @@ nav>p:active{
     width: 60px;
   }
 }
+
 </style>
 

@@ -359,7 +359,7 @@
   justify-content: space-around;
   box-sizing: border-box;
   width: 100%;
-  height: 184px;
+  height: 134px;
   padding: 20px;
 }
 .selector-box{

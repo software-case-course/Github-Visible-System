@@ -10,6 +10,7 @@ import Personalmsg from '@/components/Personalmsg'
 import Followers from '@/components/Followers'
 import Following from '@/components/Following'
 import Starred from '@/components/Starred'
+import Personalrepo from '@/components/Personalrepo'
 import VueLocalstorage from 'vue-localstorage'
 import VueSession from 'vue-session'
 
@@ -82,6 +83,14 @@ export default new Router({
           path: '/starred',
           name: 'starred',
           component: Starred,
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: '/personalrepo',
+          name: 'personalrepo',
+          component: Personalrepo,
           meta: {
             requireAuth: true
           }
