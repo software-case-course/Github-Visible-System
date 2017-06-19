@@ -76,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .starred_content{
   padding-top: 60px;
 }

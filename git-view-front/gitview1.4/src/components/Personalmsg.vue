@@ -105,7 +105,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .personalmsg_content{
     padding-top: 60px;
   }

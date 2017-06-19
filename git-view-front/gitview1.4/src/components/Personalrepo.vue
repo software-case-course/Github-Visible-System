@@ -158,7 +158,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .personalrepo_content{
   padding-top: 60px;
 }

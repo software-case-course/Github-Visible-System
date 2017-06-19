@@ -286,12 +286,13 @@
   padding: 20px;
   margin: 20px;
   border-radius: 5px;
-  border-left: 20px solid #fff;
+  border-top: 20px solid #fff;
   background-color: #155fea;
   box-shadow: 5px 5px 20px #000;
 }
 .List ul:hover{
-  background-color: #003366;
+  transition:transform 0.4s;
+  transform: scale(1.1);
 }
 .List a {
   font-size: 40px;
