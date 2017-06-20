@@ -11,9 +11,11 @@
     <transition name="fade">
       <div v-show="this.shownav" class="background-shelter" @click="setshow"></div>
     </transition>
+    <chart id="languagegraph"></chart>
     <div class="List">
         <ul v-for="item in repos">
           <a v-html="item.name" v-bind:href="item.html_url" target="_blank"></a>
+          <hr>
           <li>
             Description:&nbsp &nbsp{{item.description}}
           </li>
@@ -32,7 +34,6 @@
           </li>
         </ul>
     </div>
-    <div id="languagegraph"></div>
   </div>
 </template>
 
@@ -160,15 +161,18 @@ export default {
 
 <style scoped>
 .personalrepo_content{
-  padding-top: 60px;
+  width: 100%;
+  background-color: #ccc;
+  padding-top: 100px;
+  padding-bottom: 40px;
 }
 #languagegraph{
   width: 500px;
   height: 350px;
+  margin: 0 auto;
 }
 .List{
   width: 1200px;
-  margin-top: 40px;
   margin-right: auto;
   margin-left: auto;
   display: flex;
@@ -183,31 +187,36 @@ export default {
   padding: 20px;
   margin: 20px;
   border-radius: 5px;
-  border-left: 20px solid #fff;
-  background-color: #155fea;
-  box-shadow: 5px 5px 20px #000;
+  border-top: 8px solid #155fea;
+  background-color: #fff;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
 }
 
 .List ul:hover{
-  background-color: #003366;
+  transition: transform 0.3s;
+  transform: scale(1.1);
 }
-
 .List a {
   font-size: 40px;
   font-family: sans-serif;
-  color: #fff;
+  color: #555555;
   text-decoration: none;
-  cursor: pointer;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.List hr{
+  height: 2px;
+  background-color: #f1f1f1;
+  border: 0;
 }
 .List p {
   display: inline-block;
-  color: #fff;
+  color: #555555;
 }
 .List li, .List li>a{
   font-size: 1.2em;
   padding: 5px 0;
 }
-
 @media screen and (max-width:1200px){
   .List{
     width: 1000px;

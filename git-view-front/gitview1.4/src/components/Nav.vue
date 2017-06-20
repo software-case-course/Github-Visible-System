@@ -6,7 +6,7 @@
     <!--<a @click="totest">to</a>-->
     <a @click="tologin" id="permsg">{{this.login_permsg}}</a>
     <img v-show="this.downiconshow" @click="tosetpershow" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png"></img>
-    <transition name="slide">
+    <transition name="selecter-slide">
       <div id="usermsg" v-show="this.showusermsg">
         <p>用户：{{this.login_permsg}}</p>
         <label @click="togithub"><p>前往github</p></label>
@@ -197,18 +197,17 @@ export default {
 .nav_content{
   width: 100%;
   height: 100%;
-  min-width: 400px;
+  min-width: 510px;
 }
 #usermsg{
-  width: 10%;
-  height: 200px;
+  width: 120px;
   background-color: #222222;
   box-sizing: border-box;
   border: 1px solid #222222;
   z-index: 5;
   position: fixed;
   top:61px;
-  left: 6.5%;
+  left: 100px;
   overflow: hidden;
 }
 label{
@@ -216,12 +215,12 @@ label{
   cursor: pointer;
 }
 label>p{
-  font-size: 1.2rem;
-  height: 20px;
+  font-size: 12px;
+  height: 24px;
   border-bottom: 1px solid #206676;
   text-align: center;
   cursor: pointer;
-  line-height: 20px;
+  line-height: 24px;
   color: #ccc;
 }
 label>p:hover{
@@ -229,7 +228,7 @@ label>p:hover{
 }
 p{
   color: #ccc;
-  font-size: 1.6rem;
+  font-size: 16px;
   height: 30px;
   border-bottom: 1px solid #206676;
   text-align: center;
@@ -324,7 +323,7 @@ nav>p:active{
     width: 100px;
   }
   nav>a{
-    width: 60px;
+    width: 80px;
   }
 }
 

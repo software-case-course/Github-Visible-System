@@ -526,12 +526,13 @@ export default {
 .person_content {
   width: 100%;
   background-color: #ccc;
-  padding-top: 60px;
+  padding-top: 100px;
+  padding-bottom: 60px;
 }
 
 .charts{
   height: 600px;
-  width: 80%;
-  margin-top: 100px
+  width: 60%;
+  margin: 50px auto;
 }
 </style>

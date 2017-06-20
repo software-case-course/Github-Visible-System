@@ -83,6 +83,7 @@ label h2{
   line-height: 80px;
   margin-left: 10%;
   margin-right: 10%;
+  padding-bottom: 20px;
 }
 .List{
   width: 1200px;

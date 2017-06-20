@@ -112,12 +112,11 @@ export default {
   #permsgshow{
     margin-left:15%;
     margin-right:15%;
-    background-color:#34d2af;
+    background-color:transparent;
     width: 70%;
     height: 100%;
     left: center;
     text-align: center;
-    border: 1px solid #206676;
   }
   label{
     width: 100%;
@@ -125,6 +124,7 @@ export default {
   }
   label>h1{
     margin-top: 30px;
+    padding-bottom: 20px;
     width:100%;
     font-size: 4rem;
     border-bottom: 1px solid #206676;
@@ -133,19 +133,17 @@ export default {
     height: 60px;
     cursor: pointer;
     color: #155fea;
-    transition: 0s;
   }
   label>h1:hover{
     color: #ff0d00;
   }
   label p{
     width:100%;
-    font-size: 2.5rem;
+    font-size: 1.6rem;
     height: 42px;
     line-height: 42px;
     text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid #206676;
   }
 </style>
 

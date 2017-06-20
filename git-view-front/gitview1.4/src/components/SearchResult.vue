@@ -14,6 +14,7 @@
     <div class="List">
         <ul v-for="item in searchdatare">
           <a v-html="item.name" v-on:click="showwarehousedata(item.count);"></a>
+          <hr>
           <li>
             Description:&nbsp &nbsp{{item.description}}
           </li>
@@ -113,32 +114,39 @@
   padding: 20px;
   margin: 20px;
   border-radius: 5px;
-  border-left: 20px solid #fff;
-  background-color: #155fea;
-  box-shadow: 5px 5px 20px #000;
+  border-top: 8px solid #003399;
+  background-color: #fff;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
 }
-
 .List ul:hover{
-  background-color: #003366;
+  transition:transform 0.4s;
+  transform: scale(1.05);
 }
-
 .List a {
   font-size: 40px;
   font-family: sans-serif;
-  color: #fff;
+  color: #555555;
   text-decoration: none;
   cursor: pointer;
 }
+.List hr{
+  height: 2px;
+  background-color: #f1f1f1;
+  border: 0;
+}
 .List p {
   display: inline-block;
-  color: #fff;
+  color: #555555;
 }
 .List li, .List li>a{
   font-size: 1.2em;
   padding: 5px 0;
 }
-
 @media screen and (max-width:1200px){
+  .linegraph{
+    width: 600px;
+    height: 500px;
+  }
   .List{
     width: 1000px;
   }
@@ -155,6 +163,10 @@
   }
 }
 @media screen and (max-width:800px){
+  .linegraph{
+    width: 600px;
+    height: 400px;
+  }
   .List{
     width: 500px;
   }
@@ -163,6 +175,10 @@
   }
 }
 @media screen and (max-width:500px){
+  .linegraph{
+    width: 400px;
+    height: 400px;
+  }
   .List{
     width: 400px;
   }

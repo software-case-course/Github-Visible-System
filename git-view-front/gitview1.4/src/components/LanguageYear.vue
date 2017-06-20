@@ -12,6 +12,7 @@
     <div class="List">
         <ul v-for="item in languagetop30data">
           <a v-html="item.name" v-bind:href="item.url" target="_blank"></a>
+          <hr>
           <li>
             <p>Description :</p>&nbsp &nbsp{{item.des}}
           </li>
@@ -271,7 +272,7 @@
 }
 .List{
   width: 1200px;
-  margin-top: 40px;
+  margin-top: 0px;
   margin-right: auto;
   margin-left: auto;
   display: flex;
@@ -286,29 +287,34 @@
   padding: 20px;
   margin: 20px;
   border-radius: 5px;
-  border-top: 20px solid #fff;
-  background-color: #155fea;
-  box-shadow: 5px 5px 20px #000;
+  border-top: 8px solid #003399;
+  background-color: #fff;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
 }
 .List ul:hover{
   transition:transform 0.4s;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 .List a {
   font-size: 40px;
+  display: block;
   font-family: sans-serif;
-  color: #fff;
+  color: #555555;
   text-decoration: none;
+}
+.List hr{
+  height: 2px;
+  background-color: #f1f1f1;
+  border: 0;
 }
 .List p {
   display: inline-block;
-  color: #fff;
+  color: #555555;
 }
 .List li, .List li>a{
   font-size: 1.2em;
   padding: 5px 0;
 }
-
 @media screen and (max-width:1200px){
   .linegraph{
     width: 600px;

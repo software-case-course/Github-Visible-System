@@ -4,9 +4,6 @@
       <div v-show="this.shownav" class="information-box">
         <div class="selector-container">
           <a v-on:click="worlddis" class="selector-box">全球分布</a>
-          <a v-on:click="worlddis" class="selector-box">全球分布</a>
-          <a v-on:click="worlddis" class="selector-box">全球分布</a>
-          <a v-on:click="worlddis" class="selector-box">全球分布</a>
         </div>
         <img src="../assets/images/ic_arrow_drop_up_white_36dp_1x.png" class="slide-up-icon" @click="setshow" />
       </div>
@@ -355,8 +352,6 @@
     margin-top: 100px;
   }
 .selector-container{
-  display: flex;
-  justify-content: space-around;
   box-sizing: border-box;
   width: 100%;
   height: 134px;

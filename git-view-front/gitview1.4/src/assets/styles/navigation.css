@@ -72,3 +72,27 @@
     height: 0;
   }
 }
+.selecter-slide-enter-active{
+  animation-name: selecter-slide-down;
+  animation-duration: 0.5s;
+}
+.selecter-slide-leave-active{
+  animation-name: selecter-slide-up;
+  animation-duration: 0.5s;
+}
+@keyframes selecter-slide-down{
+  0%{
+    height: 60px;
+  }
+  100%{
+    height: 233px;
+  }
+}
+@keyframes selecter-slide-up{
+  0%{
+    height: 233px;
+  }
+  100%{
+    height: 0;
+  }
+}

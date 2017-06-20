@@ -234,6 +234,7 @@
                     })
                 }
                 this.option.dataRange.max = this.getdatamax(this.alldata)
+                window.onresize = this.chart.resize
                 this.chart.setOption(this.option)
                 this.chart.on('click', this.chartclick)
             },
@@ -497,7 +498,7 @@
 </script>
 <style scoped>
     .world_content{
-        overflow: hidden;
+        min-width: 1000px;
         background-color: #ccc;
     }
     .allmapchart {
@@ -509,10 +510,19 @@
         width: 1000px;
         height: 600px;
     }
+    form{
+        padding: 20px;
+        width: 100%;
+        min-width: 800px;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
     label {
         font-size: 20px;
         display: inline-block;
-        width: 15%;
+        width: 160px;
         color: #ccc;
     }
     input {
@@ -638,5 +648,18 @@ input:checked ~ input:active {
         top: 150px;
         right: 10%;
         display: block;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width:1200px){
+        .allmapchart {
+            top: 80px;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            width: 800px;
+            height: 600px;
+        }
     }
 </style>

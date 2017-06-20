@@ -15,6 +15,7 @@
     <div class="List">
       <ul v-for="item in starredmsg">
         <a v-bind:href="item.html_url" v-html="item.name" target="_blank"></a>
+        <hr>
         <li>
             Description:&nbsp &nbsp{{item.description}}
           </li>
@@ -112,25 +113,30 @@ label h2{
   padding: 20px;
   margin: 20px;
   border-radius: 5px;
-  border-left: 20px solid #fff;
-  background-color: #155fea;
-  box-shadow: 5px 5px 20px #000;
+  border-top: 8px solid #003399;
+  background-color: #fff;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
 }
 
 .List ul:hover{
-  background-color: #003366;
+  transition: transform 0.4s;
+  transform: scale(1.05);
 }
 
 .List a {
   font-size: 40px;
   font-family: sans-serif;
-  color: #fff;
+  color: #555555;
   text-decoration: none;
-  cursor: pointer;
+}
+.List hr{
+  height: 2px;
+  background-color: #f1f1f1;
+  border: 0;
 }
 .List p {
   display: inline-block;
-  color: #fff;
+  color: #555555;
 }
 .List li, .List li>a{
   font-size: 1.2em;
