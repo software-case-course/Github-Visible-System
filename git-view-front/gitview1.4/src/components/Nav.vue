@@ -8,7 +8,7 @@
     <img v-show="this.downiconshow" @click="tosetpershow" src="../assets/images/ic_arrow_drop_down_white_36dp_1x.png"></img>
     <transition name="selecter-slide">
       <div id="usermsg" v-show="this.showusermsg">
-        <p>用户：{{this.login_permsg}}</p>
+        <!--<p>用户：{{this.login_permsg}}</p>-->
         <label @click="togithub"><p>前往github</p></label>
         <label @click="torepo"><p>前往个人仓库</p></label>
         <label @click="tofollowers"><p>Follower</p></label>

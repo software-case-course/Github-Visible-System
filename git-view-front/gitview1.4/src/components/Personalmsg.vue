@@ -108,6 +108,7 @@ export default {
 <style scoped>
   .personalmsg_content{
     padding-top: 60px;
+    padding-bottom: 60px;
   }
   #permsgshow{
     margin-left:15%;
