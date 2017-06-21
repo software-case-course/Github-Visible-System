@@ -10,10 +10,10 @@ import 'echarts/lib/component/tooltip'
 import VueResource from 'vue-resource'
 import store from './store'
 Vue.config.productionTip = false
-import VueSession from 'vue-session'
+// import VueSession from 'vue-session'
 Vue.use(ECharts)
 Vue.use(VueResource)
-Vue.use(VueSession)
+// Vue.use(VueSession)
 Vue.component('chart', ECharts)
 /* eslint-disable no-new */
 

@@ -12,7 +12,7 @@ import Following from '@/components/Following'
 import Starred from '@/components/Starred'
 import Personalrepo from '@/components/Personalrepo'
 import VueLocalstorage from 'vue-localstorage'
-import VueSession from 'vue-session'
+// import VueSession from 'vue-session'
 
 import '../assets/styles/common.css'
 import '../assets/styles/initial.css'
@@ -22,7 +22,7 @@ import '../../map/usa.js'
 import '../../map/world.js'
 Vue.use(Router)
 Vue.use(VueLocalstorage)
-Vue.use(VueSession)
+// Vue.use(VueSession)
 
 export default new Router({
   routes: [

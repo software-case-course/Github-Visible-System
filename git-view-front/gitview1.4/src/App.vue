@@ -9,9 +9,9 @@
 <script>
 export default {
   name: 'app',
-  created () {
-    this.$session.start()
-  }
+  // created () {
+  //   this.$session.start()
+  // }
 }
 </script>
 

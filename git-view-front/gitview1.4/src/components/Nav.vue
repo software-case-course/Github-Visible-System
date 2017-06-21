@@ -41,9 +41,9 @@ export default {
   mounted() {
     this.$nextTick(function () {
       // window.addEventListener('beforeunload', this.handleunload)
-      if(((window.location.href).indexOf('code') != -1) && !this.$session.has('token')){
+      if(((window.location.href).indexOf('code') != -1) && !sessionStorage.getItem('token')){
         this.geturlstr()
-      }else if(this.$session.has('token')) {
+      }else if(sessionStorage.getItem('token')) {
         this.getpermsg()
       }
     })
@@ -72,9 +72,9 @@ export default {
         }
         this.$store.commit('sethomeurl', url)
         // console.log(this.homeurl)
-        this.$session.set('homeurl', this.homeurl)
+        sessionStorage.setItem('homeurl', this.homeurl)
         this.$store.commit('setislogined', true)
-        this.$session.set('islogin', true)
+        sessionStorage.setItem('islogin', true)
         window.location.href = ('http://www.kongin.cn/git-view/private/authorize?redirect_uri=' + this.homeurl)
       }else {
         this.$router.push({path: '/personalmsg', query:{name: this.login_permsg}})
@@ -90,13 +90,13 @@ export default {
      if(response.status === 200) {
        var urltoken = response.bodyText
        this.$store.commit('gettokenstr', urltoken)
-       this.$session.set('token',this.tokenstr)
+       sessionStorage.setItem('token',this.tokenstr)
        // console.log(this.tokenstr)
      }
      this.getpermsg()
     },
     async getpermsg () {
-      var token = this.$session.get('token')
+      var token = sessionStorage.getItem('token')
       // console.log(token)
       this.$store.commit('gettokenstr', token)
       const response = await this.$http.get('http://www.kongin.cn/git-view/private/user?token=' + this.tokenstr)
@@ -104,9 +104,9 @@ export default {
       if(response.status === 200) {
         if(response.bodyText.indexOf('error_message') != -1) {
           alert('登陆已失效，请重新登录')
-          var url = this.$session.get('homeurl')
+          var url = sessionStorage.getItem('homeurl')
           this.$store.commit('sethomeurl', url)
-          this.$session.clear()
+          sessionStorage.clear()
           this.downiconshow = false
           window.location.href = (this.homeurl)
           this.$store.commit('setislogined', false)
@@ -140,13 +140,13 @@ export default {
       this.showusermsg = false
     },
     tosignout () {
-      var url = this.$session.get ('homeurl')
-      this.$session.clear()
+      var url = sessionStorage.getItem ('homeurl')
+      sessionStorage.clear()
       console.log(url)
       window.location.href = url
     },
     async torepo () {
-      var token = this.$session.get('token')
+      var token = sessionStorage.getItem('token')
       this.$store.commit('gettokenstr', token)
       const response1 = await this.$http.get('http://www.kongin.cn/git-view/private/repos?token=' + this.tokenstr)
       const response2 = await this.$http.get('http://www.kongin.cn/git-view/private/languages?token=' + this.tokenstr)
@@ -163,8 +163,8 @@ export default {
           this.$router.push({path: '/personalrepo', query: {name: this.login_permsg}})
         } else {
           alert('登录失效，请重新登录')
-          this.$store.commit('sethomeurl', this.$session.get(homeurl))
-          this.$session.clear()
+          this.$store.commit('sethomeurl', sessionStorage.getItem(homeurl))
+          sessionStorage.clear()
           window.location.href = this.homeurl
         }
       }

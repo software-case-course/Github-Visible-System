@@ -51,8 +51,8 @@ export default {
         this.getfollowermsg()
       } else {
         alert('登录失效，请重新登录')
-        window.location.href = this.$session.get('homeurl')
-        this.$session.clear()
+        window.location.href = sessionStorage.getItem('homeurl')
+        sessionStorage.clear()
       }
     },
     async getfollowermsg () {
