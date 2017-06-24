@@ -1,7 +1,10 @@
 package action;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,11 +68,17 @@ public class PrivateSearch{
 
     @ResponseBody
     @RequestMapping("/languages")
-    public Map<String,Integer> getLanguages(String token){
-        Map<String,Integer> map = null;
+    public List<Map<String,Object>> getLanguages(String token){
+        List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
         try{
-            map = Relative.codes(token);
+            Map<String,Integer> codes = Relative.codes(token);
+            for(String key:codes.keySet()){
+                Map<String,Object> code = new HashMap<String,Object>();
+                code.put("language", key);
+                code.put("code_volume", codes.get(key));
+                result.add(code);
+            }
         }catch(IOException e){}
-        return map;
+        return result;
     }
 }

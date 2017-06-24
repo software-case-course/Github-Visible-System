@@ -21,7 +21,7 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="timetask"/>
+    <!--<context:component-scan base-package="timetask"/>-->
     <context:component-scan base-package="action"/>
     <context:component-scan base-package="util"/>
 

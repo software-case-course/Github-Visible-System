@@ -100,7 +100,7 @@
 - 结果: 授权登录人的仓库
 
 4. http://www.kongin.cn/git-view/private/languages
-- 返回类型:  json
+- 返回类型:  jsonArray
 - 参数: 
   - token: access_token (in API 2)
 - 结果: 授权登录人的仓库语言分布
